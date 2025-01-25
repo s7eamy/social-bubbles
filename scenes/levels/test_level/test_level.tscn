@@ -1,9 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://b0ycvh48vd00g"]
+[gd_scene load_steps=5 format=3 uid="uid://b0ycvh48vd00g"]
 
 [ext_resource type="Script" path="res://scenes/levels/test_level/test_level.gd" id="1_3dg5q"]
-[ext_resource type="PackedScene" uid="uid://c2h42mkmbnom4" path="res://scenes/game/game.tscn" id="1_kbdrg"]
 [ext_resource type="PackedScene" uid="uid://dp82b4kb4pydf" path="res://scenes/unit/unit.tscn" id="1_pq0by"]
-[ext_resource type="PackedScene" uid="uid://b0m72wbakf7aa" path="res://scenes/game/score/score.tscn" id="2_jct0t"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ca6bh"]
 size = Vector2(1200, 700)
@@ -26,12 +24,14 @@ mesh = SubResource("PlaneMesh_ca6bh")
 
 [node name="LeftWall" type="StaticBody2D" parent="."]
 position = Vector2(0, 300)
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
 shape = SubResource("RectangleShape2D_4i4j1")
 
 [node name="RightWall" type="StaticBody2D" parent="."]
 position = Vector2(1150, 300)
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
 shape = SubResource("RectangleShape2D_4i4j1")
@@ -39,6 +39,7 @@ shape = SubResource("RectangleShape2D_4i4j1")
 [node name="UpWall" type="StaticBody2D" parent="."]
 position = Vector2(575, 0)
 rotation = 1.5708
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="UpWall"]
 shape = SubResource("RectangleShape2D_4i4j1")
@@ -46,6 +47,7 @@ shape = SubResource("RectangleShape2D_4i4j1")
 [node name="DownWall" type="StaticBody2D" parent="."]
 position = Vector2(575, 650)
 rotation = 1.5708
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DownWall"]
 shape = SubResource("RectangleShape2D_4i4j1")
