@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_sbu8r"]
 [ext_resource type="PackedScene" uid="uid://ckj1fqvqtfm2j" path="res://scenes/characters/social_bubble/social_bubble.tscn" id="2_jmw2o"]
 
-[node name="Game" type="Node"]
+[node name="Game" type="Node" groups=["game"]]
 script = ExtResource("1_sbu8r")
 social_bubble_scene = ExtResource("2_jmw2o")
 
