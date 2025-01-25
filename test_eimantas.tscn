@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://cp1tj8vxm4evv"]
+
+[ext_resource type="PackedScene" uid="uid://dp82b4kb4pydf" path="res://scenes/unit/unit.tscn" id="1_loclc"]
+[ext_resource type="PackedScene" uid="uid://d235bok86nwo0" path="res://scenes/ui/ui.tscn" id="2_d46r5"]
+[ext_resource type="PackedScene" uid="uid://c2h42mkmbnom4" path="res://scenes/game/game.tscn" id="3_0jitr"]
+
+[node name="TestEimantas" type="Node"]
+
+[node name="Unit" parent="." instance=ExtResource("1_loclc")]
+
+[node name="Ui" parent="." instance=ExtResource("2_d46r5")]
+
+[node name="Game" parent="." instance=ExtResource("3_0jitr")]
+
+[node name="Unit2" parent="." instance=ExtResource("1_loclc")]
+
+[node name="Unit3" parent="." instance=ExtResource("1_loclc")]
+
+[node name="Unit4" parent="." instance=ExtResource("1_loclc")]
