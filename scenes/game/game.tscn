@@ -1,11 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://c2h42mkmbnom4"]
+[gd_scene load_steps=3 format=3 uid="uid://c2h42mkmbnom4"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_sbu8r"]
+[ext_resource type="PackedScene" uid="uid://ckj1fqvqtfm2j" path="res://scenes/characters/social_bubble/social_bubble.tscn" id="2_jmw2o"]
 
 [node name="Game" type="Node"]
 script = ExtResource("1_sbu8r")
-unit_counts = null
-MINIMUM_UNITS_TO_FORM_SOCIAL_BUBBLES = null
+social_bubble_scene = ExtResource("2_jmw2o")
 
 [node name="UpdateUnitListTimer" type="Timer" parent="."]
 wait_time = 0.5

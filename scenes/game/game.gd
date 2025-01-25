@@ -2,7 +2,14 @@ extends Node
 
 # variables
 
+@export var social_bubble_scene: PackedScene
+
 var unit_list: Array = []
+var unit_not_in_social_bubble_list: Array = []
+var unit_in_social_bubble_list: Array = []
+
+var connected_unit_groups: Array = []
+var units_visited_by_search: Array = []
 
 @export var unit_counts = {
 	Globals.UnitTypes.MEDIA_ILLITERATE: 0,
@@ -13,65 +20,68 @@ var unit_list: Array = []
 # constants
 
 func _ready() -> void:
-	_initialize_unit_and_social_bubble_handling_timer()
+	initialize_unit_and_social_bubble_handling_timer()
 
 func _process(delta: float) -> void:
 	pass
 
-func _initialize_unit_and_social_bubble_handling_timer():
+func initialize_unit_and_social_bubble_handling_timer():
 	var game_update_timer = $UpdateUnitListTimer
-	game_update_timer.connect("timeout", Callable(self, "_update_unit_list"))
-	#game_update_timer.connect("timeout", Callable(self, "_check_social_bubbles"))
+	game_update_timer.connect("timeout", Callable(self, "update_unit_list"))
+	game_update_timer.connect("timeout", Callable(self, "check_social_bubbles"))
 
-func _update_unit_list():
-	unit_list.clear()
+func update_unit_list():
 	unit_list = get_tree().get_nodes_in_group("units")
-	print("Unit objects:", unit_list)
-	
-	_update_unit_counts()
+	#print("Unit objects: ", unit_list)
 
-func _update_unit_counts():
-	_reset_units_counts()
+	reset_units_counts()	
 
 	for unit in unit_list:
-		unit_counts[unit.Type] += 1
+		unit_counts[unit.type] += 1
+		update_unit_belonging_to_social_bubbles(unit)
 
-func _reset_units_counts():
+func update_unit_belonging_to_social_bubbles(unit):
+	if unit.belongs_to_social_bubble:
+		unit_in_social_bubble_list.append(unit)
+		print('appended to social bubble')
+	else:
+		unit_in_social_bubble_list.append(unit)
+		print('appended to social bubble')
+
+func reset_units_counts():
+	unit_not_in_social_bubble_list = []
+	unit_in_social_bubble_list = []
+
 	for key in unit_counts.keys():
 		unit_counts[key] = 0
 
-func _check_social_bubbles():
-	_check_for_connected_group()
+func check_social_bubbles():
+	find_connected_unit_groups()
+	create_new_social_bubbles()
 
-func check_for_connected_group():
-	var group_connected = false
-	for unit in unit_list:
-		for fellow in unit.connected_fellow:
-			if check_chain(unit, fellow, [unit], 0):
-				group_connected = true
-				return true
-	group_connected = false
-	return false
+func find_connected_unit_groups():
+	connected_unit_groups = []
+	units_visited_by_search = []
 
-# Recursive function to check for a chain of exactly three connected units
-func check_chain(start_unit, current_unit, visited_units, depth):
-	# Avoid visiting the same unit more than once
-	if visited_units.has(current_unit):
-		return false
-	
-	# Add the current unit to the visited list
-	visited_units.append(current_unit)
-	
-	# If we've reached depth 2 (the third unit in the chain), we have found a group
-	if depth == 2:
-		# Check if this unit is connected back to the start unit, completing the chain
-		return true
+	for unit in unit_not_in_social_bubble_list:
+		if not units_visited_by_search.has(unit):
+			var chain: Array = []
+			depth_first_search(unit, chain)
+			connected_unit_groups.append(chain)
 
-	for next_unit in current_unit.connected_fellow:
-		if check_chain(start_unit, next_unit, visited_units, depth + 1):
-			return true
-	
-	return false
+func depth_first_search(unit: Node, chain: Array):
+	units_visited_by_search.append(unit)
+	chain.append(unit)
 
-func _create_social_bubble():
-	pass
+	for fellow in unit.connected_fellows:
+		print(fellow.name)
+		if not units_visited_by_search.has(fellow):
+			depth_first_search(fellow, chain)
+
+func create_new_social_bubbles():
+	for chain in connected_unit_groups:
+		if chain.size() >= Globals.MINIMUM_UNITS_TO_FORM_SOCIAL_BUBBLES:
+			var social_bubble = social_bubble_scene.instantiate()
+			social_bubble.units_comprising = chain
+			add_child(social_bubble)
+			print("Created SocialBubble for units:", chain)
