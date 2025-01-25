@@ -3,26 +3,46 @@
 [ext_resource type="Script" path="res://scenes/levels/test_level/test_level.gd" id="1_3dg5q"]
 [ext_resource type="PackedScene" uid="uid://dp82b4kb4pydf" path="res://scenes/unit/unit.tscn" id="1_pq0by"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_4i4j1"]
-size = Vector2(1149, 651)
-
 [sub_resource type="PlaneMesh" id="PlaneMesh_ca6bh"]
 size = Vector2(1200, 700)
 orientation = 2
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4i4j1"]
+size = Vector2(50, 1200)
 
 [node name="TestLevel" type="Node2D"]
 script = ExtResource("1_3dg5q")
 unit_scene = ExtResource("1_pq0by")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
 position = Vector2(575, 320)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-shape = SubResource("RectangleShape2D_4i4j1")
-disabled = true
-
-[node name="MeshInstance2D" type="MeshInstance2D" parent="StaticBody2D"]
 mesh = SubResource("PlaneMesh_ca6bh")
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(0, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("RectangleShape2D_4i4j1")
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(1150, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("RectangleShape2D_4i4j1")
+
+[node name="UpWall" type="StaticBody2D" parent="."]
+position = Vector2(575, 0)
+rotation = 1.5708
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpWall"]
+shape = SubResource("RectangleShape2D_4i4j1")
+
+[node name="DownWall" type="StaticBody2D" parent="."]
+position = Vector2(575, 650)
+rotation = 1.5708
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DownWall"]
+shape = SubResource("RectangleShape2D_4i4j1")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 offset = Vector2(600, 300)
