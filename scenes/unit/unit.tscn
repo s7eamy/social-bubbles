@@ -1,28 +1,22 @@
-[gd_scene load_steps=5 format=3 uid="uid://dp82b4kb4pydf"]
+[gd_scene load_steps=4 format=3 uid="uid://dp82b4kb4pydf"]
 
-[ext_resource type="Script" path="res://scenes/unit/brownian_motion.gd" id="1_ttgd5"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_8g446"]
+radius = 30.0
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_v6duu"]
-height = 1.0
-radius = 0.3
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uuxaf"]
+albedo_color = Color(0.601223, 0.601223, 0.601223, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j24px"]
-albedo_color = Color(0.699653, 0.699653, 0.699653, 1)
+[sub_resource type="SphereMesh" id="SphereMesh_lk6yj"]
+material = SubResource("StandardMaterial3D_uuxaf")
+radius = 30.0
+height = 60.0
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_rlgch"]
-material = SubResource("StandardMaterial3D_j24px")
-top_radius = 0.3
-bottom_radius = 0.3
-height = 1.0
+[node name="Node2D" type="Node2D" groups=["units"]]
 
-[node name="Unit" type="Node3D" groups=["unit group"]]
-script = ExtResource("1_ttgd5")
-speed = null
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
 
-[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+shape = SubResource("CircleShape2D_8g446")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
-shape = SubResource("CylinderShape3D_v6duu")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
-mesh = SubResource("CylinderMesh_rlgch")
+[node name="MeshInstance2D" type="MeshInstance2D" parent="CharacterBody2D"]
+mesh = SubResource("SphereMesh_lk6yj")
