@@ -17,6 +17,13 @@ const COLOR_NEUTRAL = Color(214 / 255.0, 214 / 255.0, 214 / 255.0)
 const COLOR_NEUTRAL_MAX = Color(140 / 255.0, 176 / 255.0, 214 / 255.0)
 const COLOR_LITERATE = Color(29 / 255.0, 121 / 255.0, 214 / 255.0)
 
+const MEDIA_LITERACY_NEUTRAL_MIN_LIMIT: int = -10
+const MEDIA_LITERACY_NEUTRAL_MAX_LIMIT: int = 10
+const DEFAULT_MEDIA_LITERACY_INCREMENT: int = 1
+
+const MEDIA_LITERACY_STARTING_VALUE_MIN_LIMIT: int = -50
+const MEDIA_LITERACY_STARTING_VALUE_MAX_LIMIT: int = 50
+
 var time_since_last_update: float = 0.0
 var current_direction: Vector2 = Vector2.ZERO
 var media_literacy_score: int = 0
@@ -32,8 +39,8 @@ var type: Globals.UnitTypes:
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	randomize()
-	update_interval = randf_range(0.1, 0.9)
-	media_literacy_score = randi_range(10, 50);
+	update_interval = randf_range(0.1, 0.9)s
+	media_literacy_score = randf_range(MEDIA_LITERACY_STARTING_VALUE_MIN_LIMIT, MEDIA_LITERACY_STARTING_VALUE_MAX_LIMIT);
 	update_color()
 
 func _draw() -> void:
@@ -43,46 +50,45 @@ func _draw() -> void:
 func _process(delta: float) -> void:
 	# Unit color
 	update_color()
+	move_unit(delta)
 
-	# Unit movement
+func update_color() -> void:
+	var color: Color
+	if media_literacy_score <= MEDIA_LITERACY_NEUTRAL_MIN_LIMIT:
+		color = COLOR_ILLITERATE.lerp(COLOR_NEUTRAL_MIN, calculate_literacy_weight(false, media_literacy_score))
+	elif media_literacy_score >= MEDIA_LITERACY_NEUTRAL_MAX_LIMIT:
+		color = COLOR_NEUTRAL_MAX.lerp(COLOR_LITERATE, calculate_literacy_weight(true, media_literacy_score))
+	else:
+		color = COLOR_NEUTRAL
+
+	$MeshInstance2D.modulate = color
+
+func calculate_literacy_weight(positive: bool, media_literacy_score: float):
+	if positive:
+		return float((media_literacy_score + MEDIA_LITERACY_NEUTRAL_MIN_LIMIT)) / float((100 - MEDIA_LITERACY_NEUTRAL_MAX_LIMIT))
+	else:
+		return float((media_literacy_score + 100)) / float((100 - MEDIA_LITERACY_NEUTRAL_MAX_LIMIT))
+
+func move_unit(delta):
 	time_since_last_update += delta
 	if time_since_last_update >= update_interval:
 		if connected: # stop and influence media literacy
 			current_direction = Vector2.ZERO
-			increase_media_literacy_score()
+			influence_media_literacy_score(true, DEFAULT_MEDIA_LITERACY_INCREMENT)
 		elif fellow: # go towards fellow
 			current_direction = global_position.direction_to(fellow.global_position)
 		else: # idle
 			set_brownian_direction()
 		time_since_last_update = 0.0
-	
+
 	velocity = current_direction * speed
 	move_and_slide()
 
-func update_color() -> void:
-	var color: Color
-	if media_literacy_score <= -10:
-		color = COLOR_ILLITERATE.lerp(COLOR_NEUTRAL_MIN, (media_literacy_score + 100) / 90.0)
-	elif media_literacy_score >= 10:
-		color = COLOR_NEUTRAL_MAX.lerp(COLOR_LITERATE, (media_literacy_score - 10) / 90.0)
-	else:
-		color = COLOR_NEUTRAL
-	
-	$MeshInstance2D.modulate = color
+func influence_media_literacy_score(target: ?, increment_value: float) -> void:
+	media_literacy_score += multiplication_sign(self.type == Globals.UnitTypes.MEDIA_LITERATE) * multiplication_sign(target_is_ally) * increment_value
 
-func find_closest_like_minded_unit() -> CharacterBody2D:
-	var closest_unit: CharacterBody2D = null
-	var closest_distance: float = INF
-	var area2d = $FellowRange
-	for body in area2d.get_overlapping_bodies():
-		if body.get_groups().has("units") and body != self:
-			var other_unit = body as CharacterBody2D
-			if (self.get_type() == other_unit.get_type() and self.get_type() != Globals.UnitTypes.MEDIA_NEUTRAL):
-				var distance = global_position.distance_to(other_unit.global_position)
-				if distance < closest_distance:
-					closest_distance = distance
-					closest_unit = other_unit
-	return closest_unit
+func multiplication_sign(check: bool) -> int:
+	return 1 if check else -1
 
 func set_brownian_direction() -> void:
 	current_direction = Vector2(
@@ -90,16 +96,10 @@ func set_brownian_direction() -> void:
 		randf() - 0.5
 	).normalized()
 
-func increase_media_literacy_score() -> void:
-	if type == Globals.UnitTypes.MEDIA_ILLITERATE:
-		media_literacy_score -= 1
-	elif type == Globals.UnitTypes.MEDIA_LITERATE:
-		media_literacy_score += 1
-
 func get_type() -> Globals.UnitTypes:
-	if media_literacy_score <= -10:
+	if media_literacy_score <= MEDIA_LITERACY_NEUTRAL_MIN_LIMIT:
 		return Globals.UnitTypes.MEDIA_ILLITERATE
-	elif media_literacy_score >= 10:
+	elif media_literacy_score >= MEDIA_LITERACY_NEUTRAL_MAX_LIMIT:
 		return Globals.UnitTypes.MEDIA_LITERATE
 	else:
 		return Globals.UnitTypes.MEDIA_NEUTRAL
