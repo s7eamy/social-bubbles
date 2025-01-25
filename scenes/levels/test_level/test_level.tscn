@@ -20,12 +20,14 @@ mesh = SubResource("PlaneMesh_ca6bh")
 
 [node name="LeftWall" type="StaticBody2D" parent="."]
 position = Vector2(0, 300)
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
 shape = SubResource("RectangleShape2D_4i4j1")
 
 [node name="RightWall" type="StaticBody2D" parent="."]
 position = Vector2(1150, 300)
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
 shape = SubResource("RectangleShape2D_4i4j1")
@@ -33,6 +35,7 @@ shape = SubResource("RectangleShape2D_4i4j1")
 [node name="UpWall" type="StaticBody2D" parent="."]
 position = Vector2(575, 0)
 rotation = 1.5708
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="UpWall"]
 shape = SubResource("RectangleShape2D_4i4j1")
@@ -40,6 +43,7 @@ shape = SubResource("RectangleShape2D_4i4j1")
 [node name="DownWall" type="StaticBody2D" parent="."]
 position = Vector2(575, 650)
 rotation = 1.5708
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DownWall"]
 shape = SubResource("RectangleShape2D_4i4j1")

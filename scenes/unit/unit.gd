@@ -32,6 +32,7 @@ func _ready() -> void:
 
 func _draw() -> void:
 	draw_connection_range()
+	draw_fellow_range()
 
 func _process(delta: float) -> void:
 	# Unit color
@@ -122,4 +123,8 @@ func _on_connection_range_area_exited(area: Area2D) -> void:
 
 func draw_connection_range() -> void:
 	var radius = $ConnectionRange/CollisionShape2D.shape.radius
-	draw_circle(Vector2.ZERO, radius, Color(1, 0, 0, 0.5))
+	draw_circle(Vector2.ZERO, radius, Color(1, 0, 0, 0.5), false)
+
+func draw_fellow_range() -> void:
+	var radius = $FellowRange/CollisionShape2D.shape.radius
+	draw_circle(Vector2.ZERO, radius, Color(0, 1, 0, 0.5), false)
