@@ -38,9 +38,11 @@ func _process(delta: float) -> void:
 	if time_since_last_update >= update_interval:
 		var fellow = find_closest_like_minded_unit()
 		if fellow:
-			current_direction = global_position.direction_to(fellow.global_position)
-		else:
-			# if unit is neutral or no fellows
+			if fellow.global_position.distance_to(global_position) <= 120: # stop and influence literacy
+				current_direction = Vector2.ZERO
+			else: # go towards fellow
+				current_direction = global_position.direction_to(fellow.global_position)
+		else: # idle
 			set_brownian_direction()
 		time_since_last_update = 0.0
 	
@@ -61,7 +63,7 @@ func update_color() -> void:
 func find_closest_like_minded_unit() -> CharacterBody2D:
 	var closest_unit: CharacterBody2D = null
 	var closest_distance: float = INF
-	var area2d = $Area2D
+	var area2d = $FellowRange
 	for body in area2d.get_overlapping_bodies():
 		if body.get_groups().has("units") and body != self:
 			var other_unit = body as CharacterBody2D
