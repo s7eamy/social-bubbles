@@ -15,7 +15,7 @@ top_radius = 0.3
 bottom_radius = 0.3
 height = 1.0
 
-[node name="unit" type="Node3D"]
+[node name="Unit" type="Node3D" groups=["unit group"]]
 script = ExtResource("1_ttgd5")
 speed = null
 
