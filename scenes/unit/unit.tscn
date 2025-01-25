@@ -18,8 +18,8 @@ gradient = SubResource("Gradient_nlh6s")
 fill = 1
 
 [sub_resource type="SphereMesh" id="SphereMesh_yp810"]
-radius = 28.0
-height = 56.0
+radius = 27.0
+height = 54.0
 
 [sub_resource type="Gradient" id="Gradient_ayvwm"]
 offsets = PackedFloat32Array(1)
