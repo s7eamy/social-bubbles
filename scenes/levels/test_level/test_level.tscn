@@ -1,17 +1,19 @@
 [gd_scene load_steps=3 format=3 uid="uid://b0ycvh48vd00g"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_bi730"]
-size = Vector3(5, 0, 5)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4i4j1"]
+size = Vector2(1149, 651)
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_b5l7e"]
-size = Vector2(5, 5)
+[sub_resource type="PlaneMesh" id="PlaneMesh_ca6bh"]
+size = Vector2(1200, 700)
+orientation = 2
 
-[node name="test_level" type="Node3D"]
+[node name="Node2D" type="Node2D"]
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(575, 320)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-shape = SubResource("BoxShape3D_bi730")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("RectangleShape2D_4i4j1")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
-mesh = SubResource("PlaneMesh_b5l7e")
+[node name="MeshInstance2D" type="MeshInstance2D" parent="StaticBody2D"]
+mesh = SubResource("PlaneMesh_ca6bh")
