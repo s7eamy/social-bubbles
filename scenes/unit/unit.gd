@@ -43,6 +43,7 @@ func _process(delta: float) -> void:
 		var fellow = find_closest_like_minded_unit()
 		if connected: # stop and influence media literacy
 			current_direction = Vector2.ZERO
+			increase_media_literacy_score()
 		elif fellow: # go towards fellow
 			current_direction = global_position.direction_to(fellow.global_position)
 		else: # idle
@@ -83,6 +84,12 @@ func set_brownian_direction() -> void:
 		randf() - 0.5
 	).normalized()
 
+func increase_media_literacy_score() -> void:
+	if type == Globals.UnitTypes.MEDIA_ILLITERATE:
+		media_literacy_score -= 1
+	elif type == Globals.UnitTypes.MEDIA_LITERATE:
+		media_literacy_score += 1
+
 func get_type() -> Globals.UnitTypes:
 	if media_literacy_score <= -10:
 		return Globals.UnitTypes.MEDIA_ILLITERATE
@@ -99,11 +106,11 @@ func _on_connection_range_area_entered(area: Area2D) -> void:
 		return
 	if type != fellow.get_type():
 		return
-	
+
 	connected = true
 	current_direction = Vector2.ZERO
 	connected_fellows.append(fellow)
 
 func draw_connection_range() -> void:
-	var radius = $ConnectionRange.shape.radius
+	var radius = $ConnectionRange/CollisionShape2D.shape.radius
 	draw_circle(Vector2.ZERO, radius, Color(1, 0, 0, 0.5))

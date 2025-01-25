@@ -3,11 +3,11 @@
 [ext_resource type="Script" path="res://scenes/unit/unit.gd" id="1_hloy8"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8g446"]
-radius = 30.0
+radius = 25.0
 
 [sub_resource type="SphereMesh" id="SphereMesh_ncgmo"]
-radius = 30.0
-height = 60.0
+radius = 25.0
+height = 50.0
 
 [sub_resource type="Gradient" id="Gradient_nlh6s"]
 offsets = PackedFloat32Array(0)
@@ -18,8 +18,8 @@ gradient = SubResource("Gradient_nlh6s")
 fill = 1
 
 [sub_resource type="SphereMesh" id="SphereMesh_yp810"]
-radius = 27.0
-height = 54.0
+radius = 22.0
+height = 44.0
 
 [sub_resource type="Gradient" id="Gradient_ayvwm"]
 offsets = PackedFloat32Array(1)
