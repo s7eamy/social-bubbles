@@ -22,9 +22,6 @@ var units_visited_by_search: Array = []
 func _ready() -> void:
 	initialize_unit_and_social_bubble_handling_timer()
 
-func _process(delta: float) -> void:
-	pass
-
 func initialize_unit_and_social_bubble_handling_timer():
 	var game_update_timer = $UpdateUnitListTimer
 	game_update_timer.connect("timeout", Callable(self, "update_unit_list"))
@@ -45,8 +42,8 @@ func update_unit_belonging_to_social_bubbles(unit):
 		unit_in_social_bubble_list.append(unit)
 		print('appended to social bubble')
 	else:
-		unit_in_social_bubble_list.append(unit)
-		print('appended to social bubble')
+		unit_not_in_social_bubble_list.append(unit)
+		print('appended to not social bubble')
 
 func reset_units_counts():
 	unit_not_in_social_bubble_list = []
@@ -83,5 +80,5 @@ func create_new_social_bubbles():
 		if chain.size() >= Globals.MINIMUM_UNITS_TO_FORM_SOCIAL_BUBBLES:
 			var social_bubble = social_bubble_scene.instantiate()
 			social_bubble.units_comprising = chain
-			add_child(social_bubble)
+			get_parent().add_child(social_bubble)
 			print("Created SocialBubble for units:", chain)

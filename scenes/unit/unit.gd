@@ -1,9 +1,14 @@
 extends CharacterBody2D
 
+class_name Unit
+
 # Speed of unit
 var speed: float = 120.0
 # Time interval to update direction
 var update_interval: float
+
+var social_bubble: SocialBubble = null
+var belongs_to_social_bubble: bool = false
 
 # colors
 const COLOR_ILLITERATE = Color(214 / 255.0, 42 / 255.0, 69 / 255.0)
