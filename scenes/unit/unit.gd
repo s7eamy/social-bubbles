@@ -23,12 +23,11 @@ func _ready() -> void:
 	media_literacy_score = randi_range(-100, 100);
 	update_color()
 
-func set_brownian_velocity() -> void:
+func set_brownian_direction() -> void:
 	current_direction = Vector2(
 		randf() - 0.5,
 		randf() - 0.5
 	).normalized()
-	velocity = current_direction * speed
 
 func _process(delta: float) -> void:
 	# Unit color
@@ -37,8 +36,12 @@ func _process(delta: float) -> void:
 	# Unit movement
 	time_since_last_update += delta
 	if time_since_last_update >= update_interval:
-		# if unit is neutral or no fellows
-		set_brownian_velocity()
+		var fellow = find_closest_like_minded_unit()
+		if fellow:
+			current_direction = global_position.direction_to(fellow.global_position)
+		else:
+			# if unit is neutral or no fellows
+			set_brownian_direction()
 		time_since_last_update = 0.0
 	
 	velocity = current_direction * speed
@@ -54,6 +57,20 @@ func update_color() -> void:
 		color = COLOR_NEUTRAL
 	
 	$MeshInstance2D.modulate = color
+
+func find_closest_like_minded_unit() -> CharacterBody2D:
+	var closest_unit: CharacterBody2D = null
+	var closest_distance: float = INF
+	var area2d = $Area2D
+	for body in area2d.get_overlapping_bodies():
+		if body.get_groups().has("units") and body != self:
+			var other_unit = body as CharacterBody2D
+			if (self.get_type() == other_unit.get_type() and self.get_type() != Globals.UnitTypes.MEDIA_NEUTRAL):
+				var distance = global_position.distance_to(other_unit.global_position)
+				if distance < closest_distance:
+					closest_distance = distance
+					closest_unit = other_unit
+	return closest_unit
 
 func get_type() -> Globals.UnitTypes:
 	if media_literacy_score <= -10:
