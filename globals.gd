@@ -1,0 +1,9 @@
+extends Node
+
+const MINIMUM_UNITS_TO_FORM_SOCIAL_BUBBLES: int = 3
+
+enum UnitTypes {
+	MEDIA_LITERATE,
+	MEDIA_ILLITERATE,
+	MEDIA_NEUTRAL
+}
