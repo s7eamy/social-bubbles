@@ -1,15 +1,35 @@
-[gd_scene load_steps=4 format=3 uid="uid://dp82b4kb4pydf"]
+[gd_scene load_steps=8 format=3 uid="uid://dp82b4kb4pydf"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8g446"]
 radius = 30.0
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uuxaf"]
-albedo_color = Color(0.601223, 0.601223, 0.601223, 1)
-
-[sub_resource type="SphereMesh" id="SphereMesh_lk6yj"]
-material = SubResource("StandardMaterial3D_uuxaf")
+[sub_resource type="SphereMesh" id="SphereMesh_ncgmo"]
 radius = 30.0
 height = 60.0
+
+[sub_resource type="Gradient" id="Gradient_nlh6s"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.215902, 0.215902, 0.215902, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_e0fqi"]
+gradient = SubResource("Gradient_nlh6s")
+fill = 1
+
+[sub_resource type="SphereMesh" id="SphereMesh_yp810"]
+radius = 28.0
+height = 56.0
+
+[sub_resource type="Gradient" id="Gradient_ayvwm"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_j7m3v"]
+gradient = SubResource("Gradient_ayvwm")
+width = 30
+height = 30
+fill = 1
+fill_from = Vector2(1, 1)
+fill_to = Vector2(0, 0)
 
 [node name="Unit" type="Node2D" groups=["units"]]
 
@@ -18,5 +38,10 @@ height = 60.0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
 shape = SubResource("CircleShape2D_8g446")
 
+[node name="MeshInstance2D2" type="MeshInstance2D" parent="CharacterBody2D"]
+mesh = SubResource("SphereMesh_ncgmo")
+texture = SubResource("GradientTexture2D_e0fqi")
+
 [node name="MeshInstance2D" type="MeshInstance2D" parent="CharacterBody2D"]
-mesh = SubResource("SphereMesh_lk6yj")
+mesh = SubResource("SphereMesh_yp810")
+texture = SubResource("GradientTexture2D_j7m3v")
