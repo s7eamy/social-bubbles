@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 class_name Unit
 
-# Speed of unitw
+# Speed of unit
 var speed: float = 120.0
 # Time interval to update direction
 var update_interval: float
@@ -32,7 +32,7 @@ var type: Globals.UnitTypes:
 func _ready() -> void:
 	randomize()
 	update_interval = randf_range(0.1, 0.9)
-	media_literacy_score = randi_range(10, 100);
+	media_literacy_score = randi_range(-100, 100);
 	update_color()
 
 func _draw() -> void:
