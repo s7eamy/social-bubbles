@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dp82b4kb4pydf"]
+[gd_scene load_steps=10 format=3 uid="uid://dp82b4kb4pydf"]
 
 [ext_resource type="Script" path="res://scenes/unit/unit.gd" id="1_hloy8"]
 
@@ -33,6 +33,9 @@ fill = 1
 fill_from = Vector2(1, 1)
 fill_to = Vector2(0, 0)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_65xxo"]
+radius = 200.0
+
 [node name="Unit" type="CharacterBody2D" groups=["units"]]
 script = ExtResource("1_hloy8")
 
@@ -46,3 +49,9 @@ texture = SubResource("GradientTexture2D_e0fqi")
 [node name="MeshInstance2D" type="MeshInstance2D" parent="."]
 mesh = SubResource("SphereMesh_yp810")
 texture = SubResource("GradientTexture2D_j7m3v")
+
+[node name="Area2D" type="Area2D" parent="."]
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_65xxo")
