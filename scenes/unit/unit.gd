@@ -17,6 +17,7 @@ var current_direction: Vector2 = Vector2.ZERO
 var media_literacy_score: int = 0
 var connected: bool = false
 var connected_fellows: Array = []
+var fellow: CharacterBody2D = null
 
 var type: Globals.UnitTypes:
 	get:
@@ -41,7 +42,8 @@ func _process(delta: float) -> void:
 	# Unit movement
 	time_since_last_update += delta
 	if time_since_last_update >= update_interval:
-		var fellow = find_closest_like_minded_unit()
+		if fellow:
+			print(("Found fellow! I am %s, fellow is %s") % [type, fellow.get_type()])
 		if connected: # stop and influence media literacy
 			current_direction = Vector2.ZERO
 			increase_media_literacy_score()
@@ -100,26 +102,40 @@ func get_type() -> Globals.UnitTypes:
 		return Globals.UnitTypes.MEDIA_NEUTRAL
 
 func _on_connection_range_area_entered(area: Area2D) -> void:
-	var fellow : CharacterBody2D = area.get_parent()
-	if fellow == self:
+	var unit : CharacterBody2D = area.get_parent()
+	if unit == self:
 		return
-	if fellow in connected_fellows:
+	if unit in connected_fellows:
 		return
-	if type != fellow.get_type():
+	if type != unit.get_type():
 		return
 	if type == Globals.UnitTypes.MEDIA_NEUTRAL:
 		return
 
 	connected = true
 	current_direction = Vector2.ZERO
-	connected_fellows.append(fellow)
+	connected_fellows.append(unit)
 
 func _on_connection_range_area_exited(area: Area2D) -> void:
-	var fellow : CharacterBody2D = area.get_parent()
-	if fellow in connected_fellows:
-		connected_fellows.erase(fellow)
+	var unit : CharacterBody2D = area.get_parent()
+	if unit in connected_fellows:
+		connected_fellows.erase(unit)
 		if connected_fellows.size() == 0:
 			connected = false
+
+func _on_fellow_range_area_entered(area: Area2D) -> void:
+	var unit : CharacterBody2D = area.get_parent()
+	if unit == self:
+		return
+	if unit == fellow:
+		return
+	if type != unit.get_type():
+		return
+	if type == Globals.UnitTypes.MEDIA_NEUTRAL:
+		return
+
+	if fellow == null or (global_position.distance_to(unit.global_position) < global_position.distance_to(fellow.global_position)):
+		fellow = unit
 
 func draw_connection_range() -> void:
 	var radius = $ConnectionRange/CollisionShape2D.shape.radius

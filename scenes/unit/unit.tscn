@@ -65,5 +65,6 @@ shape = SubResource("CircleShape2D_65xxo")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ConnectionRange"]
 shape = SubResource("CircleShape2D_4eky3")
 
+[connection signal="area_entered" from="FellowRange" to="." method="_on_fellow_range_area_entered"]
 [connection signal="area_entered" from="ConnectionRange" to="." method="_on_connection_range_area_entered"]
 [connection signal="area_exited" from="ConnectionRange" to="." method="_on_connection_range_area_exited"]
