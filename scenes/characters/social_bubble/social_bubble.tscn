@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://ckj1fqvqtfm2j"]
+[gd_scene load_steps=3 format=3 uid="uid://ckj1fqvqtfm2j"]
 
 [ext_resource type="Script" path="res://scenes/characters/social_bubble/social_bubble.gd" id="1_kxpqx"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_eujrt"]
+radius = 35.0
 
 [node name="SocialBubble" type="Node2D"]
 script = ExtResource("1_kxpqx")
@@ -9,3 +12,8 @@ script = ExtResource("1_kxpqx")
 wait_time = 0.1
 one_shot = true
 autostart = true
+
+[node name="InfluenceRange" type="Area2D" parent="." groups=["social bubbles"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InfluenceRange"]
+shape = SubResource("CircleShape2D_eujrt")

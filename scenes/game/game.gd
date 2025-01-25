@@ -29,7 +29,6 @@ func initialize_unit_and_social_bubble_handling_timer():
 
 func update_unit_list():
 	unit_list = get_tree().get_nodes_in_group("units")
-	#print("Unit objects: ", unit_list)
 
 	reset_units_counts()	
 
@@ -40,10 +39,8 @@ func update_unit_list():
 func update_unit_belonging_to_social_bubbles(unit):
 	if unit.belongs_to_social_bubble:
 		unit_in_social_bubble_list.append(unit)
-		print('appended to social bubble')
 	else:
 		unit_not_in_social_bubble_list.append(unit)
-		print('appended to not social bubble')
 
 func reset_units_counts():
 	unit_not_in_social_bubble_list = []
@@ -54,7 +51,7 @@ func reset_units_counts():
 
 func check_social_bubbles():
 	find_connected_unit_groups()
-	create_new_social_bubbles()
+	check_new_social_bubbles()
 
 func find_connected_unit_groups():
 	connected_unit_groups = []
@@ -71,14 +68,35 @@ func depth_first_search(unit: Node, chain: Array):
 	chain.append(unit)
 
 	for fellow in unit.connected_fellows:
-		print(fellow.name)
 		if not units_visited_by_search.has(fellow):
 			depth_first_search(fellow, chain)
 
-func create_new_social_bubbles():
+func check_new_social_bubbles():
 	for chain in connected_unit_groups:
 		if chain.size() >= Globals.MINIMUM_UNITS_TO_FORM_SOCIAL_BUBBLES:
-			var social_bubble = social_bubble_scene.instantiate()
-			social_bubble.units_comprising = chain
-			get_parent().add_child(social_bubble)
-			print("Created SocialBubble for units:", chain)
+			if social_bubble_connected_to_chain(chain):
+				add_new_unit_to_social_bubble(unit_in_chain_not_belonging_to_social_bubble(chain), social_bubble_connected_to_chain(chain))
+			else:
+				create_social_bubble(chain)
+
+func social_bubble_connected_to_chain(chain):
+	for unit in chain:
+		if unit.belongs_to_social_bubble:
+			return unit.social_bubble
+	return null
+
+func add_new_unit_to_social_bubble(unit, social_bubble):
+	unit.social_bubble = social_bubble
+	unit.belongs_to_social_bubble = true
+	social_bubble.units_comprising.append(unit)
+
+func unit_in_chain_not_belonging_to_social_bubble(chain):
+	for unit in chain:
+		if not unit.belongs_to_social_bubble:
+			return unit
+	return null
+
+func create_social_bubble(chain):
+	var social_bubble = social_bubble_scene.instantiate()
+	social_bubble.units_comprising = chain
+	get_parent().add_child(social_bubble)
