@@ -1,9 +1,14 @@
 extends CharacterBody2D
 
-# Speed of unit
+class_name Unit
+
+# Speed of unitw
 var speed: float = 120.0
 # Time interval to update direction
 var update_interval: float
+
+var social_bubble: SocialBubble = null
+var belongs_to_social_bubble: bool = false
 
 # colors
 const COLOR_ILLITERATE = Color(214 / 255.0, 42 / 255.0, 69 / 255.0)
@@ -27,7 +32,7 @@ var type: Globals.UnitTypes:
 func _ready() -> void:
 	randomize()
 	update_interval = randf_range(0.1, 0.9)
-	media_literacy_score = randi_range(-100, 100);
+	media_literacy_score = randi_range(10, 100);
 	update_color()
 
 func _draw() -> void:

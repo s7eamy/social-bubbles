@@ -16,8 +16,11 @@ size = Vector2(50, 1200)
 script = ExtResource("1_3dg5q")
 unit_scene = ExtResource("1_pq0by")
 
-[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+[node name="Score" parent="." instance=ExtResource("2_jct0t")]
 
+[node name="Game" parent="." instance=ExtResource("1_kbdrg")]
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
 position = Vector2(575, 320)
 mesh = SubResource("PlaneMesh_ca6bh")
 
