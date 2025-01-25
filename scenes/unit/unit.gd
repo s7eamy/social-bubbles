@@ -1,9 +1,9 @@
 extends CharacterBody2D
 
-# Speed of the Brownian motion
-var speed: float = 300.0
+# Speed of unit
+var speed: float = 120.0
 # Time interval to update direction
-var update_interval: float = 0.2
+var update_interval: float
 
 # colors
 const COLOR_ILLITERATE = Color(214 / 255.0, 42 / 255.0, 69 / 255.0)
@@ -19,6 +19,7 @@ var media_literacy_score: int = 0
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	randomize()
+	update_interval = randf_range(0.1, 0.9)
 	media_literacy_score = randi_range(-100, 100);
 	update_color()
 
