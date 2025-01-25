@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ckj1fqvqtfm2j"]
+
+[ext_resource type="Script" path="res://scenes/characters/social_bubble/social_bubble.gd" id="1_kxpqx"]
+
+[node name="SocialBubble" type="Node2D"]
+script = ExtResource("1_kxpqx")
