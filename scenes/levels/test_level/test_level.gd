@@ -5,7 +5,7 @@ extends Node2D
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	randomize()
-	var num_units = 4
+	var num_units = 16
 	for i in range(num_units):
 		var unit_instance = unit_scene.instantiate()
 		unit_instance.position = Vector2(

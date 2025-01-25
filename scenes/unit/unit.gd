@@ -42,8 +42,6 @@ func _process(delta: float) -> void:
 	# Unit movement
 	time_since_last_update += delta
 	if time_since_last_update >= update_interval:
-		if fellow:
-			print(("Found fellow! I am %s, fellow is %s") % [type, fellow.get_type()])
 		if connected: # stop and influence media literacy
 			current_direction = Vector2.ZERO
 			increase_media_literacy_score()
