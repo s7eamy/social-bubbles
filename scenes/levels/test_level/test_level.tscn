@@ -16,8 +16,20 @@ position = Vector2(575, 320)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 shape = SubResource("RectangleShape2D_4i4j1")
+disabled = true
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="StaticBody2D"]
 mesh = SubResource("PlaneMesh_ca6bh")
 
 [node name="Unit" parent="." instance=ExtResource("1_pq0by")]
+position = Vector2(300, 540)
+
+[node name="Unit2" parent="." instance=ExtResource("1_pq0by")]
+position = Vector2(600, 280)
+
+[node name="Unit3" parent="." instance=ExtResource("1_pq0by")]
+position = Vector2(593.845, 200)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2(600, 300)
+zoom = Vector2(0.8, 0.8)
