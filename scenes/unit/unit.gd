@@ -7,7 +7,9 @@ var update_interval: float = 0.2
 
 # colors
 const COLOR_ILLITERATE = Color(214 / 255.0, 42 / 255.0, 69 / 255.0)
+const COLOR_NEUTRAL_MIN = Color(214 / 255.0, 145 / 255.0, 156 / 255.0)
 const COLOR_NEUTRAL = Color(214 / 255.0, 214 / 255.0, 214 / 255.0)
+const COLOR_NEUTRAL_MAX = Color(140 / 255.0, 176 / 255.0, 214 / 255.0)
 const COLOR_LITERATE = Color(29 / 255.0, 121 / 255.0, 214 / 255.0)
 
 var time_since_last_update: float = 0.0
@@ -44,9 +46,9 @@ func _process(delta: float) -> void:
 func update_color() -> void:
 	var color: Color
 	if media_literacy_score <= -10:
-		color = COLOR_ILLITERATE.lerp(COLOR_NEUTRAL, (media_literacy_score + 100) / 90.0)
+		color = COLOR_ILLITERATE.lerp(COLOR_NEUTRAL_MIN, (media_literacy_score + 100) / 90.0)
 	elif media_literacy_score >= 10:
-		color = COLOR_NEUTRAL.lerp(COLOR_LITERATE, (media_literacy_score - 10) / 90.0)
+		color = COLOR_NEUTRAL_MAX.lerp(COLOR_LITERATE, (media_literacy_score - 10) / 90.0)
 	else:
 		color = COLOR_NEUTRAL
 	
