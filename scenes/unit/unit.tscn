@@ -11,7 +11,7 @@ material = SubResource("StandardMaterial3D_uuxaf")
 radius = 30.0
 height = 60.0
 
-[node name="Node2D" type="Node2D" groups=["units"]]
+[node name="Unit" type="Node2D" groups=["units"]]
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
 
