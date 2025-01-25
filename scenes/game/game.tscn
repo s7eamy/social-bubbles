@@ -4,6 +4,8 @@
 
 [node name="Game" type="Node"]
 script = ExtResource("1_sbu8r")
+unit_counts = null
+MINIMUM_UNITS_TO_FORM_SOCIAL_BUBBLES = null
 
 [node name="UpdateUnitListTimer" type="Timer" parent="."]
 wait_time = 0.5

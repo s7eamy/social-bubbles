@@ -1,3 +1,6 @@
 [gd_scene format=3 uid="uid://bjgxubpwudhiq"]
 
 [node name="main" type="Node"]
+
+[node name="UpdateScoreTimer" type="Timer" parent="."]
+autostart = true
