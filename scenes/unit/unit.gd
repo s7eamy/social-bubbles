@@ -27,7 +27,7 @@ var type: Globals.UnitTypes:
 func _ready() -> void:
 	randomize()
 	update_interval = randf_range(0.1, 0.9)
-	media_literacy_score = randi_range(-100, 100);
+	media_literacy_score = randi_range(-50, 50);
 	update_color()
 
 func _draw() -> void:
@@ -106,10 +106,19 @@ func _on_connection_range_area_entered(area: Area2D) -> void:
 		return
 	if type != fellow.get_type():
 		return
+	if type == Globals.UnitTypes.MEDIA_NEUTRAL:
+		return
 
 	connected = true
 	current_direction = Vector2.ZERO
 	connected_fellows.append(fellow)
+
+func _on_connection_range_area_exited(area: Area2D) -> void:
+	var fellow : CharacterBody2D = area.get_parent()
+	if fellow in connected_fellows:
+		connected_fellows.erase(fellow)
+		if connected_fellows.size() == 0:
+			connected = false
 
 func draw_connection_range() -> void:
 	var radius = $ConnectionRange/CollisionShape2D.shape.radius
