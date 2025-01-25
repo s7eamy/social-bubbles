@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dp82b4kb4pydf"]
+[gd_scene load_steps=11 format=3 uid="uid://dp82b4kb4pydf"]
 
 [ext_resource type="Script" path="res://scenes/unit/unit.gd" id="1_hloy8"]
 
@@ -36,6 +36,9 @@ fill_to = Vector2(0, 0)
 [sub_resource type="CircleShape2D" id="CircleShape2D_65xxo"]
 radius = 200.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_4eky3"]
+radius = 45.0
+
 [node name="Unit" type="CharacterBody2D" groups=["units"]]
 script = ExtResource("1_hloy8")
 
@@ -55,3 +58,10 @@ monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FellowRange"]
 shape = SubResource("CircleShape2D_65xxo")
+
+[node name="ConnectionRange" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ConnectionRange"]
+shape = SubResource("CircleShape2D_4eky3")
+
+[connection signal="area_entered" from="ConnectionRange" to="." method="_on_connection_range_area_entered"]

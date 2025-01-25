@@ -15,6 +15,13 @@ const COLOR_LITERATE = Color(29 / 255.0, 121 / 255.0, 214 / 255.0)
 var time_since_last_update: float = 0.0
 var current_direction: Vector2 = Vector2.ZERO
 var media_literacy_score: int = 0
+var connected: bool = false
+var connected_fellows: Array = []
+
+var type: Globals.UnitTypes:
+	get:
+		return get_type()
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -23,11 +30,8 @@ func _ready() -> void:
 	media_literacy_score = randi_range(-100, 100);
 	update_color()
 
-func set_brownian_direction() -> void:
-	current_direction = Vector2(
-		randf() - 0.5,
-		randf() - 0.5
-	).normalized()
+func _draw() -> void:
+	draw_connection_range()
 
 func _process(delta: float) -> void:
 	# Unit color
@@ -37,11 +41,10 @@ func _process(delta: float) -> void:
 	time_since_last_update += delta
 	if time_since_last_update >= update_interval:
 		var fellow = find_closest_like_minded_unit()
-		if fellow:
-			if fellow.global_position.distance_to(global_position) <= 120: # stop and influence literacy
-				current_direction = Vector2.ZERO
-			else: # go towards fellow
-				current_direction = global_position.direction_to(fellow.global_position)
+		if connected: # stop and influence media literacy
+			current_direction = Vector2.ZERO
+		elif fellow: # go towards fellow
+			current_direction = global_position.direction_to(fellow.global_position)
 		else: # idle
 			set_brownian_direction()
 		time_since_last_update = 0.0
@@ -74,6 +77,12 @@ func find_closest_like_minded_unit() -> CharacterBody2D:
 					closest_unit = other_unit
 	return closest_unit
 
+func set_brownian_direction() -> void:
+	current_direction = Vector2(
+		randf() - 0.5,
+		randf() - 0.5
+	).normalized()
+
 func get_type() -> Globals.UnitTypes:
 	if media_literacy_score <= -10:
 		return Globals.UnitTypes.MEDIA_ILLITERATE
@@ -81,3 +90,20 @@ func get_type() -> Globals.UnitTypes:
 		return Globals.UnitTypes.MEDIA_LITERATE
 	else:
 		return Globals.UnitTypes.MEDIA_NEUTRAL
+
+func _on_connection_range_area_entered(area: Area2D) -> void:
+	var fellow : CharacterBody2D = area.get_parent()
+	if fellow == self:
+		return
+	if fellow in connected_fellows:
+		return
+	if type != fellow.get_type():
+		return
+	
+	connected = true
+	current_direction = Vector2.ZERO
+	connected_fellows.append(fellow)
+
+func draw_connection_range() -> void:
+	var radius = $ConnectionRange.shape.radius
+	draw_circle(Vector2.ZERO, radius, Color(1, 0, 0, 0.5))
