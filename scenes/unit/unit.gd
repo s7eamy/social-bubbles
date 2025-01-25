@@ -33,7 +33,7 @@ var type: Globals.UnitTypes:
 func _ready() -> void:
 	randomize()
 	update_interval = randf_range(0.1, 0.9)
-	media_literacy_score = randi_range(-50, 50);
+	media_literacy_score = randi_range(10, 50);
 	update_color()
 
 func _draw() -> void:
@@ -105,7 +105,9 @@ func get_type() -> Globals.UnitTypes:
 		return Globals.UnitTypes.MEDIA_NEUTRAL
 
 func _on_connection_range_area_entered(area: Area2D) -> void:
-	var unit : CharacterBody2D = area.get_parent()
+	var unit = area.get_parent()
+	if unit is SocialBubble:
+		return
 	if unit == self:
 		return
 	if unit in connected_fellows:
@@ -120,14 +122,18 @@ func _on_connection_range_area_entered(area: Area2D) -> void:
 	connected_fellows.append(unit)
 
 func _on_connection_range_area_exited(area: Area2D) -> void:
-	var unit : CharacterBody2D = area.get_parent()
+	var unit = area.get_parent()
+	if unit is SocialBubble:
+		return
 	if unit in connected_fellows:
 		connected_fellows.erase(unit)
 		if connected_fellows.size() == 0:
 			connected = false
 
 func _on_fellow_range_area_entered(area: Area2D) -> void:
-	var unit : CharacterBody2D = area.get_parent()
+	var unit = area.get_parent()
+	if unit is SocialBubble:
+		return
 	if unit == self:
 		return
 	if unit == fellow:
