@@ -37,7 +37,7 @@ func _process(delta: float) -> void:
 	# Unit movement
 	time_since_last_update += delta
 	if time_since_last_update >= update_interval:
-		# if unit is neutral or no fellows,
+		# if unit is neutral or no fellows
 		set_brownian_velocity()
 		time_since_last_update = 0.0
 	
@@ -54,3 +54,11 @@ func update_color() -> void:
 		color = COLOR_NEUTRAL
 	
 	$MeshInstance2D.modulate = color
+
+func get_type() -> Globals.UnitTypes:
+	if media_literacy_score <= -10:
+		return Globals.UnitTypes.MEDIA_ILLITERATE
+	elif media_literacy_score >= 10:
+		return Globals.UnitTypes.MEDIA_LITERATE
+	else:
+		return Globals.UnitTypes.MEDIA_NEUTRAL
