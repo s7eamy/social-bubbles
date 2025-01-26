@@ -87,8 +87,8 @@ func move_unit(delta):
 	velocity = current_direction * speed
 	move_and_slide()
 
-func influence_media_literacy_score(target: Object, increment_value: float) -> void:
-	if target is Unit:
+func influence_media_literacy_score(target: Object, increment_value: int) -> void:
+	if target is CharacterBody2D:
 		target = target as Unit
 		if target.media_literacy_score >= MAX_MEDIA_LITERACY or target.media_literacy_score <= MIN_MEDIA_LITERACY:
 			return
