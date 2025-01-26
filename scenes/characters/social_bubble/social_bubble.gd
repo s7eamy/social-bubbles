@@ -5,7 +5,6 @@ class_name SocialBubble
 const INFLUENCE_RADIUS: int = 45
 
 @export var units_comprising: Array = []
-#@export var units_comprising_count: int = 0
 var type: Globals.UnitTypes
 
 var affected: bool = false
@@ -59,12 +58,6 @@ func _process(delta: float) -> void:
 	affect_units_comprising_media_literacy()
 	position = get_average_position()
 	current_direction = brownian_motion()
-	if time_since_last_update >= update_interval:
-		for unit in units_comprising:
-			# i am not entirely sure how this part works
-			unit.current_direction = current_direction
-		time_since_last_update = 0.0
-
 
 func brownian_motion() -> Vector2:
 	var direction = Vector2(randf_range(-1, 1), randf_range(-1, 1))

@@ -5,10 +5,7 @@ class_name Unit
 # Speed of unit
 var speed: float = 120.0
 # Time interval to update direction
-var update_interval: float
-
-var social_bubble: SocialBubble = null
-var belongs_to_social_bubble: bool = false
+var update_interval: float = 0
 
 # colors
 const COLOR_ILLITERATE = Color(214 / 255.0, 42 / 255.0, 69 / 255.0)
@@ -19,26 +16,36 @@ const COLOR_LITERATE = Color(29 / 255.0, 121 / 255.0, 214 / 255.0)
 
 const MEDIA_LITERACY_NEUTRAL_MIN_LIMIT: int = -10
 const MEDIA_LITERACY_NEUTRAL_MAX_LIMIT: int = 10
-const DEFAULT_MEDIA_LITERACY_INCREMENT: float = 1
+const DEFAULT_MEDIA_LITERACY_INCREMENT: float = 10
 
 const MEDIA_LITERACY_STARTING_VALUE_MIN_LIMIT: int = -50
 const MEDIA_LITERACY_STARTING_VALUE_MAX_LIMIT: int = 50
 const MAX_MEDIA_LITERACY: int = 100
 const MIN_MEDIA_LITERACY: int = -100
 
+enum States {
+	FORMED_SOCIAL_BUBBLE,
+	CONNECTED_WITH_FELLOW,
+	FOUND_FELLOW,
+	IDLE
+}
+var state: States = States.IDLE
+
 var time_since_last_update: float = 0.0
 var current_direction: Vector2 = Vector2.ZERO
 var media_literacy_score: float = 0.0
+
 var connected: bool = false
 var connected_fellows: Array = []
 var fellow: CharacterBody2D = null
+
+var social_bubble: SocialBubble = null
+var belongs_to_social_bubble: bool = false
 
 var type: Globals.UnitTypes:
 	get:
 		return get_type()
 
-
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	randomize()
 	update_interval = randf_range(0.1, 0.9)
@@ -50,9 +57,20 @@ func _draw() -> void:
 	draw_fellow_range()
 
 func _process(delta: float) -> void:
-	# Unit color
+	determine_state()
 	update_color()
 	move_unit(delta)
+	update_media_literacy_score_by_fellow(delta)
+
+func determine_state() -> void:
+	if self.belongs_to_social_bubble:
+		self.state = States.FORMED_SOCIAL_BUBBLE
+	elif self.connected:
+		self.state = States.CONNECTED_WITH_FELLOW
+	elif self.fellow:
+		self.state = States.FOUND_FELLOW
+	else:
+		self.state = States.IDLE
 
 func update_color() -> void:
 	var color: Color
@@ -65,31 +83,39 @@ func update_color() -> void:
 
 	$MeshInstance2D.modulate = color
 
-func calculate_literacy_weight(positive: bool, media_literacy_score: float):
+func calculate_literacy_weight(positive: bool, score: float):
 	if positive:
-		return float((media_literacy_score + MEDIA_LITERACY_NEUTRAL_MIN_LIMIT)) / float((100 - MEDIA_LITERACY_NEUTRAL_MAX_LIMIT))
+		return float((score + MEDIA_LITERACY_NEUTRAL_MIN_LIMIT)) / float((100 - MEDIA_LITERACY_NEUTRAL_MAX_LIMIT))
 	else:
-		return float((media_literacy_score + 100)) / float((100 - MEDIA_LITERACY_NEUTRAL_MAX_LIMIT))
+		return float((score + 100)) / float((100 - MEDIA_LITERACY_NEUTRAL_MAX_LIMIT))
 
-func move_unit(delta):
+func move_unit(delta) -> void:
 	time_since_last_update += delta
 	if time_since_last_update >= update_interval:
-		if connected: # stop and influence media literacy
+		if self.state == States.FORMED_SOCIAL_BUBBLE:
+			current_direction = social_bubble.current_direction
+			update_interval = social_bubble.update_interval
+		elif self.state == States.CONNECTED_WITH_FELLOW:
 			current_direction = Vector2.ZERO
-			influence_media_literacy_score(connected_fellows[0], DEFAULT_MEDIA_LITERACY_INCREMENT)
-		elif fellow: # go towards fellow
+		elif self.state == States.FOUND_FELLOW:
 			current_direction = global_position.direction_to(fellow.global_position)
-		else: # idle
+		elif self.state == States.IDLE:
 			set_brownian_direction()
 		time_since_last_update = 0.0
-
+	
 	velocity = current_direction * speed
 	move_and_slide()
 
-func influence_media_literacy_score(target: Object, increment_value: int) -> void:
-	if media_literacy_score >= MAX_MEDIA_LITERACY or media_literacy_score <= MIN_MEDIA_LITERACY:
-		return
-	media_literacy_score += multiplication_sign(target.type == Globals.UnitTypes.MEDIA_LITERATE) * increment_value * connected_fellows.size()
+func update_media_literacy_score_by_fellow(delta) -> void:
+	if state != States.CONNECTED_WITH_FELLOW: return
+	
+	var increment_size = delta * DEFAULT_MEDIA_LITERACY_INCREMENT * connected_fellows.size()
+	influence_media_literacy_score(connected_fellows[0], increment_size)
+
+func influence_media_literacy_score(target: Object, increment_value: float) -> void:
+	if media_literacy_score >= MAX_MEDIA_LITERACY or media_literacy_score <= MIN_MEDIA_LITERACY: return
+	
+	media_literacy_score += multiplication_sign(target.type == Globals.UnitTypes.MEDIA_LITERATE) * increment_value
 
 func multiplication_sign(check: bool) -> int:
 	return 1 if check else -1
@@ -120,7 +146,7 @@ func _on_fellow_range_area_entered(area: Area2D) -> void:
 		return
 	if type == Globals.UnitTypes.MEDIA_NEUTRAL:
 		return
-
+	
 	if fellow == null or (global_position.distance_to(unit.global_position) < global_position.distance_to(fellow.global_position)):
 		fellow = unit
 
@@ -136,7 +162,7 @@ func _on_connection_range_area_entered(area: Area2D) -> void:
 		return
 	if type == Globals.UnitTypes.MEDIA_NEUTRAL:
 		return
-
+	
 	connected = true
 	current_direction = Vector2.ZERO
 	connected_fellows.append(unit)
@@ -157,7 +183,6 @@ func draw_connection_range() -> void:
 func draw_fellow_range() -> void:
 	var radius = $FellowRange/CollisionShape2D.shape.radius
 	draw_circle(Vector2.ZERO, radius, Color(0, 1, 0, 0.5), false)
-
 
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	# if clicked on unit and it has social bubbles, increase media literacy of all units in the social bubble
