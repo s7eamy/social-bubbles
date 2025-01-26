@@ -43,7 +43,7 @@ var type: Globals.UnitTypes:
 func _ready() -> void:
 	randomize()
 	update_interval = randf_range(0.1, 0.9)
-	media_literacy_score = randf_range(MEDIA_LITERACY_STARTING_VALUE_MIN_LIMIT, MEDIA_LITERACY_STARTING_VALUE_MAX_LIMIT);
+	media_literacy_score = randi_range(MEDIA_LITERACY_STARTING_VALUE_MIN_LIMIT, MEDIA_LITERACY_STARTING_VALUE_MAX_LIMIT);
 	update_color()
 
 func _draw() -> void:
