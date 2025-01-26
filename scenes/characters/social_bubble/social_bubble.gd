@@ -5,7 +5,11 @@ class_name SocialBubble
 const INFLUENCE_RADIUS: int = 45
 
 @export var units_comprising: Array = []
+#@export var units_comprising_count: int = 0
 var type: Globals.UnitTypes
+
+var affected: bool = false
+var affected_by_social_bubbles: Array = []
 
 func _ready() -> void:
 	var update_units_comprising_timer = $UpdateUnitsComprisingTimer
@@ -41,16 +45,39 @@ func get_average_position() -> Vector2:
 	else:
 		return Vector2.ZERO
 
+func _process(delta: float) -> void:
+	affect_units_comprising_media_literacy()
+
+func affect_units_comprising_media_literacy():
+	if affected == false: return
+
+	var increment_size: float = 0.0
+	for social_bubble in affected_by_social_bubbles:
+		increment_size += multiplication_sign(social_bubble.type == Globals.UnitTypes.MEDIA_LITERATE) * social_bubble.units_comprising.size()
+	increment_size /= self.units_comprising.size()
+
+	for unit in self.units_comprising:
+		unit.influence_media_literacy_score(self, increment_size)
+
+func multiplication_sign(check: bool) -> int:
+	return 1 if check else -1
+
 func _on_influence_range_area_entered(area: Area2D) -> void:
 	var social_bubble = area.get_parent()
 	if social_bubble == self:
 		return
 	if social_bubble is SocialBubble:
-		affect_units_comprising_media_literacy(social_bubble.units_comprising.size())
+		affected_by_social_bubbles.append(social_bubble)
+		affected = true
 	else:
 		return
 
-func affect_units_comprising_media_literacy(size: int):
-	print('affect_units_comprising_media_literacy')
-	#unit_list = social_bubble.units_comprising
-	#for unit in 
+func _on_influence_range_area_exited(area: Area2D) -> void:
+	var social_bubble = area.get_parent()
+	if social_bubble is SocialBubble:
+		if affected_by_social_bubbles.has(social_bubble):
+			affected_by_social_bubbles.erase(social_bubble)
+			if affected_by_social_bubbles.size() == 0:
+				affected = false
+	else:
+		return

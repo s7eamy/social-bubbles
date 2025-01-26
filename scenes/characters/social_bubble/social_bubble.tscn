@@ -22,3 +22,4 @@ autostart = true
 shape = SubResource("CircleShape2D_eujrt")
 
 [connection signal="area_entered" from="InfluenceRange" to="." method="_on_influence_range_area_entered"]
+[connection signal="area_exited" from="InfluenceRange" to="." method="_on_influence_range_area_exited"]
