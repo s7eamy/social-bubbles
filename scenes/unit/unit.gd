@@ -66,18 +66,19 @@ func update_color() -> void:
 
 	$MeshInstance2D.modulate = color
 
-func calculate_literacy_weight(positive: bool, media_literacy_score: float):
+func calculate_literacy_weight(positive: bool, literacy_score: float):
 	if positive:
-		return float((media_literacy_score + MEDIA_LITERACY_NEUTRAL_MIN_LIMIT)) / float((100 - MEDIA_LITERACY_NEUTRAL_MAX_LIMIT))
+		return float((literacy_score + MEDIA_LITERACY_NEUTRAL_MIN_LIMIT)) / float((100 - MEDIA_LITERACY_NEUTRAL_MAX_LIMIT))
 	else:
-		return float((media_literacy_score + 100)) / float((100 - MEDIA_LITERACY_NEUTRAL_MAX_LIMIT))
+		return float((literacy_score + 100)) / float((100 - MEDIA_LITERACY_NEUTRAL_MAX_LIMIT))
 
 func move_unit(delta):
 	time_since_last_update += delta
 	if time_since_last_update >= update_interval:
 		if connected: # stop and influence media literacy
 			current_direction = Vector2.ZERO
-			influence_media_literacy_score(connected_fellows[0], DEFAULT_MEDIA_LITERACY_INCREMENT)
+			for connected_fellow in connected_fellows: # influence all connected fellows
+				influence_media_literacy_score(connected_fellow, DEFAULT_MEDIA_LITERACY_INCREMENT)
 		elif fellow: # go towards fellow
 			current_direction = global_position.direction_to(fellow.global_position)
 		else: # idle
@@ -87,13 +88,13 @@ func move_unit(delta):
 	velocity = current_direction * speed
 	move_and_slide()
 
-func influence_media_literacy_score(target: Object, increment_value: float) -> void:
-	if target is Unit:
+func influence_media_literacy_score(target: Object, increment_value: int) -> void:
+	if target is CharacterBody2D:
 		target = target as Unit
 		if target.media_literacy_score >= MAX_MEDIA_LITERACY or target.media_literacy_score <= MIN_MEDIA_LITERACY:
 			return
 	#media_literacy_score += multiplication_sign(self.type == Globals.UnitTypes.MEDIA_LITERATE) * multiplication_sign(target.type == Globals.UnitTypes.MEDIA_LITERATE) * increment_value
-	media_literacy_score += multiplication_sign(target.type == Globals.UnitTypes.MEDIA_LITERATE) * increment_value
+	target.media_literacy_score += multiplication_sign(target.type == Globals.UnitTypes.MEDIA_LITERATE) * increment_value
 
 func multiplication_sign(check: bool) -> int:
 	return 1 if check else -1
