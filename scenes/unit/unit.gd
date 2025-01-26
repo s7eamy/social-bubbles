@@ -88,10 +88,8 @@ func move_unit(delta):
 	move_and_slide()
 
 func influence_media_literacy_score(target: Object, increment_value: int) -> void:
-	if target is CharacterBody2D:
-		target = target as Unit
-		if target.media_literacy_score >= MAX_MEDIA_LITERACY or target.media_literacy_score <= MIN_MEDIA_LITERACY:
-			return
+	if media_literacy_score >= MAX_MEDIA_LITERACY or media_literacy_score <= MIN_MEDIA_LITERACY:
+		return
 	#media_literacy_score += multiplication_sign(self.type == Globals.UnitTypes.MEDIA_LITERATE) * multiplication_sign(target.type == Globals.UnitTypes.MEDIA_LITERATE) * increment_value
 	media_literacy_score += multiplication_sign(target.type == Globals.UnitTypes.MEDIA_LITERATE) * increment_value * connected_fellows.size()
 
@@ -161,3 +159,13 @@ func draw_connection_range() -> void:
 func draw_fellow_range() -> void:
 	var radius = $FellowRange/CollisionShape2D.shape.radius
 	draw_circle(Vector2.ZERO, radius, Color(0, 1, 0, 0.5), false)
+
+
+func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	# if clicked on unit and it has social bubbles, increase media literacy of all units in the social bubble
+	if event is InputEventMouseButton:
+		var mouse_event = event as InputEventMouseButton
+		if mouse_event.button_index == MOUSE_BUTTON_LEFT and mouse_event.pressed:
+			if social_bubble:
+				print("Pressed on unit with social bubble. Affected ", social_bubble.units_comprising.size(), " units.")
+				social_bubble.affect_units_comprising_media_literacy(0)
