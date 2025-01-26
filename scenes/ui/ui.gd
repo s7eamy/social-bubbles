@@ -5,15 +5,16 @@ var score_literate: int = 0
 var score_illiterate: int = 0
 var count_literate: int = 0
 var count_illiterate: int = 0
+var influence_points: float = 0
 var count_literate_social_bubbles: int = 0
 var count_illiterate_social_bubbles: int = 0
 @onready var score_label: Label = $Background/ScoreBar/ScoreLabel
 @onready var score_bar: ProgressBar = $Background/ScoreBar
-@onready var influence_points_label: Label = $Background/InfluencePointsPanel/InfluencePointsLabel
 @onready var literates_label: Label = $Background/LiteratesPanel/LiteratesLabel
 @onready var illiterates_label: Label = $Background/IlliteratesPanel/IlliteratesLabel
 @onready var literates_bubbles_label: Label = $Background/LiteratesBubblesPanel/LiteratesBubblesLabel
 @onready var illiterates_bubbles_label: Label = $Background/IlliteratesBubblesPanel/IlliteratesBubblesLabel
+@onready var influence_points_label: Label = $Background/InfluencePointsPanel/InfluencePointsLabel
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -24,6 +25,7 @@ func _process(delta: float) -> void:
 	calculate_score()
 	calculate_unit_counts()
 	calculate_social_bubble_counts()
+	calculate_influence_points()
 	
 func find_game_node():
 	# Start searching from the root node
@@ -70,3 +72,8 @@ func calculate_social_bubble_counts():
 				count_literate_social_bubbles += 1
 		literates_bubbles_label.text = str(count_literate_social_bubbles)
 		illiterates_bubbles_label.text = str(count_illiterate_social_bubbles)
+		
+func calculate_influence_points():
+	influence_points += 0.1
+	influence_points_label.text = str(round(influence_points))
+	

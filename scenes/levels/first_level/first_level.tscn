@@ -37,12 +37,13 @@ zoom = Vector2(0.5, 0.5)
 
 [node name="Ui" parent="." instance=ExtResource("3_wqjjq")]
 
-[node name="Map" type="Node2D" parent="Ui/Background/Border/Frame" index="0"]
+[node name="Map" type="Node2D" parent="Ui/Background/Border/Frame" index="1"]
 position = Vector2(533, 281)
 script = ExtResource("2_mwoe8")
 unit_scene = ExtResource("3_bvfp1")
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="Ui/Background/Border/Frame/Map"]
+visible = false
 position = Vector2(467.5, 304.5)
 scale = Vector2(1.6625, 1.66714)
 mesh = SubResource("PlaneMesh_3dohb")
@@ -272,5 +273,8 @@ theme_override_font_sizes/font_size = 30
 text = "Illiterate
 social bubbles"
 horizontal_alignment = 1
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(1974, 1237)
 
 [editable path="Ui"]
