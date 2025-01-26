@@ -5,7 +5,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_eujrt"]
 radius = 35.0
 
-[node name="SocialBubble" type="Node2D"]
+[node name="SocialBubble" type="Node2D" groups=["social bubbles"]]
 script = ExtResource("1_kxpqx")
 
 [node name="UpdateUnitsComprisingTimer" type="Timer" parent="."]
@@ -16,7 +16,7 @@ autostart = true
 [node name="UpdateInfluenceRadiusTimer" type="Timer" parent="."]
 autostart = true
 
-[node name="InfluenceRange" type="Area2D" parent="." groups=["social bubbles"]]
+[node name="InfluenceRange" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InfluenceRange"]
 shape = SubResource("CircleShape2D_eujrt")

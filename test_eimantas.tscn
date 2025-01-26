@@ -24,21 +24,17 @@ points = PackedVector2Array(0, 0, 771, 431)
 width = 4.0
 default_color = Color(1, 0, 1, 1)
 
-[node name="Unit" parent="Ui/Background/Border/Frame" index="2" node_paths=PackedStringArray("line") instance=ExtResource("1_loclc")]
+[node name="Unit" parent="Ui/Background/Border/Frame" index="2" instance=ExtResource("1_loclc")]
 position = Vector2(758, 77)
-line = NodePath("../Line2D")
 
-[node name="Unit2" parent="Ui/Background/Border/Frame" index="3" node_paths=PackedStringArray("line") instance=ExtResource("1_loclc")]
+[node name="Unit2" parent="Ui/Background/Border/Frame" index="3" instance=ExtResource("1_loclc")]
 position = Vector2(791, 446)
-line = NodePath("../Line2D")
 
-[node name="Unit3" parent="Ui/Background/Border/Frame" index="4" node_paths=PackedStringArray("line") instance=ExtResource("1_loclc")]
+[node name="Unit3" parent="Ui/Background/Border/Frame" index="4" instance=ExtResource("1_loclc")]
 position = Vector2(128, 380)
-line = NodePath("../Line2D")
 
-[node name="Unit4" parent="Ui/Background/Border/Frame" index="5" node_paths=PackedStringArray("line") instance=ExtResource("1_loclc")]
+[node name="Unit4" parent="Ui/Background/Border/Frame" index="5" instance=ExtResource("1_loclc")]
 position = Vector2(334, 100)
-line = NodePath("../Line2D")
 
 [node name="Game" parent="." instance=ExtResource("3_0jitr")]
 
