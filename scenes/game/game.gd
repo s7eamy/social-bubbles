@@ -39,7 +39,7 @@ func update_unit_list():
 func update_unit_belonging_to_social_bubbles(unit):
 	if unit.belongs_to_social_bubble:
 		unit_in_social_bubble_list.append(unit)
-	else:
+	elif  unit.type != Globals.UnitTypes.MEDIA_NEUTRAL:
 		unit_not_in_social_bubble_list.append(unit)
 
 func reset_units_counts():
@@ -86,6 +86,8 @@ func social_bubble_connected_to_chain(chain):
 	return null
 
 func add_new_unit_to_social_bubble(unit, social_bubble):
+	if unit.type == Globals.UnitTypes.MEDIA_NEUTRAL: return
+
 	unit.social_bubble = social_bubble
 	unit.belongs_to_social_bubble = true
 	social_bubble.units_comprising.append(unit)

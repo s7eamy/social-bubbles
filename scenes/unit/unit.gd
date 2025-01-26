@@ -19,17 +19,14 @@ const COLOR_LITERATE = Color(29 / 255.0, 121 / 255.0, 214 / 255.0)
 
 const MEDIA_LITERACY_NEUTRAL_MIN_LIMIT: int = -10
 const MEDIA_LITERACY_NEUTRAL_MAX_LIMIT: int = 10
-const DEFAULT_MEDIA_LITERACY_INCREMENT: int = 1
+const DEFAULT_MEDIA_LITERACY_INCREMENT: float = 1
 
 const MEDIA_LITERACY_STARTING_VALUE_MIN_LIMIT: int = -50
 const MEDIA_LITERACY_STARTING_VALUE_MAX_LIMIT: int = 50
 
-const MAX_MEDIA_LITERACY: int = 100
-const MIN_MEDIA_LITERACY: int = -100
-
 var time_since_last_update: float = 0.0
 var current_direction: Vector2 = Vector2.ZERO
-var media_literacy_score: int = 0
+var media_literacy_score: float = 0.0
 var connected: bool = false
 var connected_fellows: Array = []
 var fellow: CharacterBody2D = null
@@ -43,7 +40,7 @@ var type: Globals.UnitTypes:
 func _ready() -> void:
 	randomize()
 	update_interval = randf_range(0.1, 0.9)
-	media_literacy_score = randi_range(MEDIA_LITERACY_STARTING_VALUE_MIN_LIMIT, MEDIA_LITERACY_STARTING_VALUE_MAX_LIMIT);
+	media_literacy_score = randf_range(MEDIA_LITERACY_STARTING_VALUE_MIN_LIMIT, MEDIA_LITERACY_STARTING_VALUE_MAX_LIMIT);
 	update_color()
 
 func _draw() -> void:
@@ -66,11 +63,11 @@ func update_color() -> void:
 
 	$MeshInstance2D.modulate = color
 
-func calculate_literacy_weight(positive: bool, literacy_score: float):
+func calculate_literacy_weight(positive: bool, media_literacy_score: float):
 	if positive:
-		return float((literacy_score + MEDIA_LITERACY_NEUTRAL_MIN_LIMIT)) / float((100 - MEDIA_LITERACY_NEUTRAL_MAX_LIMIT))
+		return float((media_literacy_score + MEDIA_LITERACY_NEUTRAL_MIN_LIMIT)) / float((100 - MEDIA_LITERACY_NEUTRAL_MAX_LIMIT))
 	else:
-		return float((literacy_score + 100)) / float((100 - MEDIA_LITERACY_NEUTRAL_MAX_LIMIT))
+		return float((media_literacy_score + 100)) / float((100 - MEDIA_LITERACY_NEUTRAL_MAX_LIMIT))
 
 func move_unit(delta):
 	time_since_last_update += delta
@@ -90,7 +87,6 @@ func move_unit(delta):
 func influence_media_literacy_score(target: Object, increment_value: int) -> void:
 	if media_literacy_score >= MAX_MEDIA_LITERACY or media_literacy_score <= MIN_MEDIA_LITERACY:
 		return
-	#media_literacy_score += multiplication_sign(self.type == Globals.UnitTypes.MEDIA_LITERATE) * multiplication_sign(target.type == Globals.UnitTypes.MEDIA_LITERATE) * increment_value
 	media_literacy_score += multiplication_sign(target.type == Globals.UnitTypes.MEDIA_LITERATE) * increment_value * connected_fellows.size()
 
 func multiplication_sign(check: bool) -> int:
