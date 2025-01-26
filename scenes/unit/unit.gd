@@ -23,6 +23,8 @@ const DEFAULT_MEDIA_LITERACY_INCREMENT: float = 1
 
 const MEDIA_LITERACY_STARTING_VALUE_MIN_LIMIT: int = -50
 const MEDIA_LITERACY_STARTING_VALUE_MAX_LIMIT: int = 50
+const MAX_MEDIA_LITERACY: int = 100
+const MIN_MEDIA_LITERACY: int = -100
 
 var time_since_last_update: float = 0.0
 var current_direction: Vector2 = Vector2.ZERO
@@ -163,5 +165,10 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 		var mouse_event = event as InputEventMouseButton
 		if mouse_event.button_index == MOUSE_BUTTON_LEFT and mouse_event.pressed:
 			if social_bubble:
-				print("Pressed on unit with social bubble. Affected ", social_bubble.units_comprising.size(), " units.")
-				social_bubble.affect_units_comprising_media_literacy(0)
+				print("Boosting ", social_bubble.units_comprising.size(), " units")
+				# not pretty, but it works. everytime we click on a unit, it greatly boosts literally of all units in its bubble
+				for unit in social_bubble.units_comprising:
+					var increase = DEFAULT_MEDIA_LITERACY_INCREMENT * 50
+					if unit.media_literacy_score + increase > MAX_MEDIA_LITERACY:
+						increase = MAX_MEDIA_LITERACY - unit.media_literacy_score
+					unit.media_literacy_score += increase
