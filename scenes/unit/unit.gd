@@ -24,6 +24,9 @@ const DEFAULT_MEDIA_LITERACY_INCREMENT: int = 1
 const MEDIA_LITERACY_STARTING_VALUE_MIN_LIMIT: int = -50
 const MEDIA_LITERACY_STARTING_VALUE_MAX_LIMIT: int = 50
 
+const MAX_MEDIA_LITERACY: int = 100
+const MIN_MEDIA_LITERACY: int = -100
+
 var time_since_last_update: float = 0.0
 var current_direction: Vector2 = Vector2.ZERO
 var media_literacy_score: int = 0
@@ -85,6 +88,10 @@ func move_unit(delta):
 	move_and_slide()
 
 func influence_media_literacy_score(target: Object, increment_value: float) -> void:
+	if target is Unit:
+		target = target as Unit
+		if target.media_literacy_score >= MAX_MEDIA_LITERACY or target.media_literacy_score <= MIN_MEDIA_LITERACY:
+			return
 	#media_literacy_score += multiplication_sign(self.type == Globals.UnitTypes.MEDIA_LITERATE) * multiplication_sign(target.type == Globals.UnitTypes.MEDIA_LITERATE) * increment_value
 	media_literacy_score += multiplication_sign(target.type == Globals.UnitTypes.MEDIA_LITERATE) * increment_value
 
