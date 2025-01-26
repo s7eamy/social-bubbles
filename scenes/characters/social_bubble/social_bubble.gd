@@ -11,6 +11,11 @@ var type: Globals.UnitTypes
 var affected: bool = false
 var affected_by_social_bubbles: Array = []
 
+var time_since_last_update: float = 0.0
+var current_direction: Vector2 = Vector2.ZERO
+var update_interval: float = 0.4
+var speed: float = 100.0
+
 func _ready() -> void:
 	var update_units_comprising_timer = $UpdateUnitsComprisingTimer
 	update_units_comprising_timer.connect("timeout", Callable(self, "update_units_comprising_list"))
@@ -45,8 +50,26 @@ func get_average_position() -> Vector2:
 	else:
 		return Vector2.ZERO
 
+func _draw() -> void:
+	var pos: Vector2 = position
+	draw_circle(pos, 5, Color(0, 0, 0, 1), true)
+
 func _process(delta: float) -> void:
+	time_since_last_update += delta
 	affect_units_comprising_media_literacy()
+	position = get_average_position()
+	current_direction = brownian_motion()
+	if time_since_last_update >= update_interval:
+		for unit in units_comprising:
+			# i am not entirely sure how this part works
+			unit.current_direction = current_direction
+		time_since_last_update = 0.0
+
+
+func brownian_motion() -> Vector2:
+	var direction = Vector2(randf_range(-1, 1), randf_range(-1, 1))
+	current_direction = direction.normalized()
+	return current_direction
 
 func affect_units_comprising_media_literacy():
 	if affected == false: return
