@@ -1,9 +1,33 @@
-[gd_scene load_steps=3 format=3 uid="uid://ckj1fqvqtfm2j"]
+[gd_scene load_steps=8 format=3 uid="uid://ckj1fqvqtfm2j"]
 
 [ext_resource type="Script" path="res://scenes/characters/social_bubble/social_bubble.gd" id="1_kxpqx"]
+[ext_resource type="Shader" path="res://scenes/characters/social_bubble/social_bubble.gdshader" id="2_tcw8f"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_eujrt"]
 radius = 35.0
+
+[sub_resource type="Gradient" id="Gradient_s2htx"]
+offsets = PackedFloat32Array(0.655405, 0.804054)
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_vf15m"]
+gradient = SubResource("Gradient_s2htx")
+width = 100
+height = 100
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8neyk"]
+shader = ExtResource("2_tcw8f")
+shader_parameter/center = Vector2(0.5, 0.5)
+shader_parameter/inner_color = Color(0, 0.941176, 0, 1)
+shader_parameter/outer_color = Color(0, 0.345098, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gnwwe"]
+shader = ExtResource("2_tcw8f")
+shader_parameter/center = Vector2(0.5, 0.5)
+shader_parameter/inner_color = Color(0, 0.764706, 0, 1)
+shader_parameter/outer_color = Color(0, 0.34902, 0, 0.427451)
 
 [node name="SocialBubble" type="Node2D" groups=["social bubbles"]]
 script = ExtResource("1_kxpqx")
@@ -20,6 +44,18 @@ autostart = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InfluenceRange"]
 shape = SubResource("CircleShape2D_eujrt")
+
+[node name="Sprite2DFirstAttempt" type="Sprite2D" parent="InfluenceRange"]
+visible = false
+texture = SubResource("GradientTexture2D_vf15m")
+
+[node name="InfluenceBoundaryShapeOld" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_8neyk")
+
+[node name="InfluenceBoundaryShape" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_gnwwe")
+offset_right = 40.0
+offset_bottom = 40.0
 
 [connection signal="area_entered" from="InfluenceRange" to="." method="_on_influence_range_area_entered"]
 [connection signal="area_exited" from="InfluenceRange" to="." method="_on_influence_range_area_exited"]

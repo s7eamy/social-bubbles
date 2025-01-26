@@ -30,10 +30,11 @@ func update_units_comprising_list():
 		type = units_comprising[0].type
 
 func update_influence_radius():
-	var count: int = units_comprising.size()
+	start_radiating_effect()
 
+	var count: int = units_comprising.size()
 	$InfluenceRange/CollisionShape2D.shape.radius = count * INFLUENCE_RADIUS
-	draw_influence_radius()
+	#draw_influence_radius()
 
 func draw_influence_radius():
 	var radius: int = $InfluenceRange/CollisionShape2D.shape.radius
@@ -48,6 +49,17 @@ func get_average_position() -> Vector2:
 		return total_position / units_comprising.size()
 	else:
 		return Vector2.ZERO
+
+func start_radiating_effect():
+	var influence_shape = $InfluenceRange/CollisionShape2D.shape
+	if influence_shape is CollisionShape2D:
+		var current_radius = influence_shape.radius
+		var target_radius = current_radius * 1.2
+
+		var tween = create_tween()
+		tween.tween_property(influence_shape, "radius", target_radius, 0.5).as_relative()
+		tween.tween_property(influence_shape, "radius", current_radius, 0.5).as_relative()
+		tween.set_loops()
 
 #func _draw() -> void:
 	#var pos: Vector2 = position
@@ -99,3 +111,11 @@ func _on_influence_range_area_exited(area: Area2D) -> void:
 				affected = false
 	else:
 		return
+
+func update_influence_visual() -> void:
+	var influence_shape = $InfluenceRange/CollisionShape2D.shape
+	if influence_shape and influence_shape is CircleShape2D:
+		var visual_node = $InfluenceBoundaryShape  # Replace with the name of your visual node
+		var shader_material = visual_node.material
+		if shader_material and shader_material is ShaderMaterial:
+			shader_material.set_shader_param("radius", influence_shape.radius)
