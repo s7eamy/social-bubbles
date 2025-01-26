@@ -38,7 +38,7 @@ func update_influence_radius():
 func draw_influence_radius():
 	var radius: int = $InfluenceRange/CollisionShape2D.shape.radius
 	var pos: Vector2 = get_average_position()
-	draw_circle(pos, radius, Color(0, 0.5, 0.5, 0.5), false)
+	#draw_circle(pos, radius, Color(0, 0.5, 0.5, 0.5), false)
 
 func get_average_position() -> Vector2:
 	var total_position = Vector2.ZERO

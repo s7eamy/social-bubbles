@@ -1,0 +1,56 @@
+[gd_scene load_steps=6 format=3 uid="uid://cp1tj8vxm4evv"]
+
+[ext_resource type="Script" path="res://scenes/levels/test_eimantas/test_eimantas.gd" id="1_jecob"]
+[ext_resource type="PackedScene" uid="uid://d235bok86nwo0" path="res://scenes/ui/ui.tscn" id="1_wfxbg"]
+[ext_resource type="Texture2D" uid="uid://cb55aal1vbcxx" path="res://assets/textures/urban-city-map-dresden-poster-grayscale-street-vector-34009066.jpg" id="2_gxwub"]
+[ext_resource type="PackedScene" uid="uid://dp82b4kb4pydf" path="res://scenes/unit/unit.tscn" id="3_dgii4"]
+[ext_resource type="PackedScene" uid="uid://c2h42mkmbnom4" path="res://scenes/game/game.tscn" id="4_g3vum"]
+
+[node name="TestEimantas" type="Node"]
+script = ExtResource("1_jecob")
+
+[node name="Ui" parent="." instance=ExtResource("1_wfxbg")]
+visible = false
+
+[node name="TextureRect2" type="TextureRect" parent="Ui/Background/Border/Frame" index="0"]
+self_modulate = Color(1, 1, 1, 0.231373)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_gxwub")
+
+[node name="Line2D" type="Line2D" parent="Ui/Background/Border/Frame" index="1"]
+points = PackedVector2Array(0, 0, 771, 431)
+width = 4.0
+default_color = Color(1, 0, 1, 1)
+
+[node name="Unit" parent="Ui/Background/Border/Frame" index="2" instance=ExtResource("3_dgii4")]
+position = Vector2(758, 77)
+
+[node name="Unit2" parent="Ui/Background/Border/Frame" index="3" instance=ExtResource("3_dgii4")]
+position = Vector2(791, 446)
+
+[node name="Unit3" parent="Ui/Background/Border/Frame" index="4" instance=ExtResource("3_dgii4")]
+position = Vector2(128, 380)
+
+[node name="Unit4" parent="Ui/Background/Border/Frame" index="5" instance=ExtResource("3_dgii4")]
+position = Vector2(334, 100)
+
+[node name="Game" parent="." instance=ExtResource("4_g3vum")]
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+position = Vector2(378, 225)
+emitting = false
+amount = 20
+lifetime = 0.5
+one_shot = true
+emission_shape = 1
+emission_sphere_radius = 1.0
+gravity = Vector2(0, 0)
+scale_amount_max = 2.0
+color = Color(0.839216, 0.164706, 0.231373, 1)
+
+[editable path="Ui"]
