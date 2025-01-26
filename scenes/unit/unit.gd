@@ -39,7 +39,7 @@ var type: Globals.UnitTypes:
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	randomize()
-	update_interval = randf_range(0.1, 0.9)s
+	update_interval = randf_range(0.1, 0.9)
 	media_literacy_score = randf_range(MEDIA_LITERACY_STARTING_VALUE_MIN_LIMIT, MEDIA_LITERACY_STARTING_VALUE_MAX_LIMIT);
 	update_color()
 
@@ -74,7 +74,7 @@ func move_unit(delta):
 	if time_since_last_update >= update_interval:
 		if connected: # stop and influence media literacy
 			current_direction = Vector2.ZERO
-			influence_media_literacy_score(true, DEFAULT_MEDIA_LITERACY_INCREMENT)
+			influence_media_literacy_score(connected_fellows[0], DEFAULT_MEDIA_LITERACY_INCREMENT)
 		elif fellow: # go towards fellow
 			current_direction = global_position.direction_to(fellow.global_position)
 		else: # idle
@@ -84,8 +84,9 @@ func move_unit(delta):
 	velocity = current_direction * speed
 	move_and_slide()
 
-func influence_media_literacy_score(target: ?, increment_value: float) -> void:
-	media_literacy_score += multiplication_sign(self.type == Globals.UnitTypes.MEDIA_LITERATE) * multiplication_sign(target_is_ally) * increment_value
+func influence_media_literacy_score(target: Object, increment_value: float) -> void:
+	#media_literacy_score += multiplication_sign(self.type == Globals.UnitTypes.MEDIA_LITERATE) * multiplication_sign(target.type == Globals.UnitTypes.MEDIA_LITERATE) * increment_value
+	media_literacy_score += multiplication_sign(target.type == Globals.UnitTypes.MEDIA_LITERATE) * increment_value
 
 func multiplication_sign(check: bool) -> int:
 	return 1 if check else -1
@@ -103,6 +104,22 @@ func get_type() -> Globals.UnitTypes:
 		return Globals.UnitTypes.MEDIA_LITERATE
 	else:
 		return Globals.UnitTypes.MEDIA_NEUTRAL
+
+func _on_fellow_range_area_entered(area: Area2D) -> void:
+	var unit = area.get_parent()
+	if unit is SocialBubble:
+		return
+	if unit == self:
+		return
+	if unit == fellow:
+		return
+	if type != unit.get_type():
+		return
+	if type == Globals.UnitTypes.MEDIA_NEUTRAL:
+		return
+
+	if fellow == null or (global_position.distance_to(unit.global_position) < global_position.distance_to(fellow.global_position)):
+		fellow = unit
 
 func _on_connection_range_area_entered(area: Area2D) -> void:
 	var unit = area.get_parent()
@@ -129,22 +146,6 @@ func _on_connection_range_area_exited(area: Area2D) -> void:
 		connected_fellows.erase(unit)
 		if connected_fellows.size() == 0:
 			connected = false
-
-func _on_fellow_range_area_entered(area: Area2D) -> void:
-	var unit = area.get_parent()
-	if unit is SocialBubble:
-		return
-	if unit == self:
-		return
-	if unit == fellow:
-		return
-	if type != unit.get_type():
-		return
-	if type == Globals.UnitTypes.MEDIA_NEUTRAL:
-		return
-
-	if fellow == null or (global_position.distance_to(unit.global_position) < global_position.distance_to(fellow.global_position)):
-		fellow = unit
 
 func draw_connection_range() -> void:
 	var radius = $ConnectionRange/CollisionShape2D.shape.radius
