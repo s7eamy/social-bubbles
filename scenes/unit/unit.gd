@@ -52,9 +52,9 @@ func _ready() -> void:
 	media_literacy_score = randf_range(MEDIA_LITERACY_STARTING_VALUE_MIN_LIMIT, MEDIA_LITERACY_STARTING_VALUE_MAX_LIMIT);
 	update_color()
 
-func _draw() -> void:
-	draw_connection_range()
-	draw_fellow_range()
+#func _draw() -> void:
+	#draw_connection_range()
+	#draw_fellow_range()
 
 func _process(delta: float) -> void:
 	determine_state()
@@ -90,12 +90,12 @@ func calculate_literacy_weight(positive: bool, score: float):
 		return float((score + 100)) / float((100 - MEDIA_LITERACY_NEUTRAL_MAX_LIMIT))
 
 func move_unit(delta) -> void:
+	if self.state == States.FORMED_SOCIAL_BUBBLE:
+		current_direction = social_bubble.current_direction
+		update_interval = social_bubble.update_interval
 	time_since_last_update += delta
 	if time_since_last_update >= update_interval:
-		if self.state == States.FORMED_SOCIAL_BUBBLE:
-			current_direction = social_bubble.current_direction
-			update_interval = social_bubble.update_interval
-		elif self.state == States.CONNECTED_WITH_FELLOW:
+		if self.state == States.CONNECTED_WITH_FELLOW:
 			current_direction = Vector2.ZERO
 		elif self.state == States.FOUND_FELLOW:
 			current_direction = global_position.direction_to(fellow.global_position)

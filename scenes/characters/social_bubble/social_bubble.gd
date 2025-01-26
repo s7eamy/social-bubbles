@@ -12,7 +12,7 @@ var affected_by_social_bubbles: Array = []
 
 var time_since_last_update: float = 0.0
 var current_direction: Vector2 = Vector2.ZERO
-var update_interval: float = 0.4
+var update_interval: float = 0.5
 var speed: float = 100.0
 
 func _ready() -> void:
@@ -33,12 +33,12 @@ func update_influence_radius():
 	var count: int = units_comprising.size()
 
 	$InfluenceRange/CollisionShape2D.shape.radius = count * INFLUENCE_RADIUS
-	#draw_influence_radius
-#
-#func draw_influence_radius():
-	#var radius: int = $InfluenceRange/CollisionShape2D.shape.radius
-	#var pos: Vector2 = get_average_position()
-	#draw_circle(pos, radius, Color(0, 0.5, 0.5, 0.5), false)
+	draw_influence_radius()
+
+func draw_influence_radius():
+	var radius: int = $InfluenceRange/CollisionShape2D.shape.radius
+	var pos: Vector2 = get_average_position()
+	draw_circle(pos, radius, Color(0, 0.5, 0.5, 0.5), false)
 
 func get_average_position() -> Vector2:
 	var total_position = Vector2.ZERO
@@ -49,15 +49,17 @@ func get_average_position() -> Vector2:
 	else:
 		return Vector2.ZERO
 
-func _draw() -> void:
-	var pos: Vector2 = position
-	draw_circle(pos, 5, Color(0, 0, 0, 1), true)
+#func _draw() -> void:
+	#var pos: Vector2 = position
+	#draw_circle(pos, 5, Color(0, 0, 0, 1), true)
 
 func _process(delta: float) -> void:
 	time_since_last_update += delta
 	affect_units_comprising_media_literacy()
 	position = get_average_position()
-	current_direction = brownian_motion()
+	if time_since_last_update >= update_interval:
+		current_direction = brownian_motion()
+		time_since_last_update = 0
 
 func brownian_motion() -> Vector2:
 	var direction = Vector2(randf_range(-1, 1), randf_range(-1, 1))
