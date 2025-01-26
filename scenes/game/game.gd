@@ -4,6 +4,8 @@ extends Node
 
 @export var social_bubble_scene: PackedScene
 
+var social_bubble_list: Array = []
+
 var unit_list: Array = []
 var unit_not_in_social_bubble_list: Array = []
 var unit_in_social_bubble_list: Array = []
@@ -25,7 +27,11 @@ func _ready() -> void:
 func initialize_unit_and_social_bubble_handling_timer():
 	var game_update_timer = $UpdateUnitListTimer
 	game_update_timer.connect("timeout", Callable(self, "update_unit_list"))
+	game_update_timer.connect("timeout", Callable(self, "update_social_bubble_list"))
 	game_update_timer.connect("timeout", Callable(self, "check_social_bubbles"))
+
+func update_social_bubble_list():
+	social_bubble_list = get_tree().get_nodes_in_group("social bubbles")
 
 func update_unit_list():
 	unit_list = get_tree().get_nodes_in_group("units")

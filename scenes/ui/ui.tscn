@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://d235bok86nwo0"]
+[gd_scene load_steps=8 format=3 uid="uid://d235bok86nwo0"]
 
 [ext_resource type="Script" path="res://scenes/ui/ui.gd" id="1_w005m"]
 
@@ -30,7 +30,7 @@ corner_radius_bottom_left = 10
 shadow_color = Color(0, 0, 0, 0.25098)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_80425"]
-bg_color = Color(0.891807, 0.270956, 0.29519, 1)
+bg_color = Color(0.839216, 0.243137, 0.192157, 1)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
@@ -44,7 +44,7 @@ shadow_color = Color(0, 0, 0, 0.25098)
 shadow_size = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_02wg3"]
-bg_color = Color(0.317662, 0.461157, 0.901641, 1)
+bg_color = Color(0.113725, 0.47451, 0.839216, 1)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
@@ -56,11 +56,27 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 shadow_color = Color(0, 0, 0, 0.25098)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b5vtm"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.25098)
+shadow_size = 5
+
 [node name="Ui" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 1149.0
+offset_bottom = 646.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_w005m")
@@ -80,8 +96,8 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 24.0
-offset_top = 82.0
-offset_right = -180.0
+offset_top = 98.0
+offset_right = -270.0
 offset_bottom = -16.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -107,7 +123,7 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_left = 22.0
 offset_top = 18.0
-offset_right = -180.0
+offset_right = -270.0
 offset_bottom = 47.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(0, 0, 0, 0)
@@ -123,13 +139,14 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -78.0
-offset_top = 5.0
-offset_right = 81.0
-offset_bottom = 28.0
+offset_left = -143.5
+offset_top = 4.0
+offset_right = 60.5
+offset_bottom = 46.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
 text = "??? : ???"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -139,12 +156,195 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -167.0
+offset_left = -233.0
 offset_top = 20.0
-offset_right = -8.0
-offset_bottom = 43.0
+offset_right = -34.0
+offset_bottom = 62.0
 grow_horizontal = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
 text = "Events"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="InfluencePointsPanel" type="Panel" parent="Background"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -253.0
+offset_top = 101.0
+offset_right = -20.0
+offset_bottom = 314.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_b5vtm")
+
+[node name="InfluencePointsLabel" type="Label" parent="Background/InfluencePointsPanel"]
+layout_mode = 0
+offset_left = 51.0
+offset_top = 12.0
+offset_right = 184.0
+offset_bottom = 122.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 80
+text = "??"
+horizontal_alignment = 1
+
+[node name="StatLabel" type="Label" parent="Background/InfluencePointsPanel"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 129.0
+offset_right = 225.0
+offset_bottom = 208.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -5
+theme_override_font_sizes/font_size = 30
+text = "Influence
+points"
+horizontal_alignment = 1
+
+[node name="LiteratesPanel" type="Panel" parent="Background"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -253.0
+offset_top = 341.0
+offset_right = -20.0
+offset_bottom = 554.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_b5vtm")
+
+[node name="LiteratesLabel" type="Label" parent="Background/LiteratesPanel"]
+layout_mode = 0
+offset_left = 51.0
+offset_top = 12.0
+offset_right = 184.0
+offset_bottom = 122.0
+theme_override_colors/font_color = Color(0.113725, 0.47451, 0.839216, 1)
+theme_override_font_sizes/font_size = 80
+text = "??"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StatLabel" type="Label" parent="Background/LiteratesPanel"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 129.0
+offset_right = 225.0
+offset_bottom = 208.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -5
+theme_override_font_sizes/font_size = 30
+text = "Literates"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="IlliteratesPanel" type="Panel" parent="Background"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -253.0
+offset_top = 585.0
+offset_right = -20.0
+offset_bottom = 798.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_b5vtm")
+
+[node name="IlliteratesLabel" type="Label" parent="Background/IlliteratesPanel"]
+layout_mode = 0
+offset_left = 51.0
+offset_top = 12.0
+offset_right = 184.0
+offset_bottom = 122.0
+theme_override_colors/font_color = Color(0.839216, 0.243137, 0.192157, 1)
+theme_override_font_sizes/font_size = 80
+text = "??"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StatLabel" type="Label" parent="Background/IlliteratesPanel"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 129.0
+offset_right = 225.0
+offset_bottom = 208.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -5
+theme_override_font_sizes/font_size = 30
+text = "Illiterates"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="LiteratesBubblesPanel" type="Panel" parent="Background"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -253.0
+offset_top = 825.0
+offset_right = -20.0
+offset_bottom = 1038.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_b5vtm")
+
+[node name="LiteratesBubblesLabel" type="Label" parent="Background/LiteratesBubblesPanel"]
+layout_mode = 0
+offset_left = 51.0
+offset_top = 12.0
+offset_right = 184.0
+offset_bottom = 122.0
+theme_override_colors/font_color = Color(0.113725, 0.47451, 0.839216, 1)
+theme_override_font_sizes/font_size = 80
+text = "??"
+horizontal_alignment = 1
+
+[node name="StatLabel" type="Label" parent="Background/LiteratesBubblesPanel"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 129.0
+offset_right = 225.0
+offset_bottom = 208.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -5
+theme_override_font_sizes/font_size = 30
+text = "Literate
+social bubbles"
+horizontal_alignment = 1
+
+[node name="IlliteratesBubblesPanel" type="Panel" parent="Background"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -253.0
+offset_top = 1063.0
+offset_right = -20.0
+offset_bottom = 1276.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_b5vtm")
+
+[node name="IlliteratesBubblesLabel" type="Label" parent="Background/IlliteratesBubblesPanel"]
+layout_mode = 0
+offset_left = 51.0
+offset_top = 12.0
+offset_right = 184.0
+offset_bottom = 122.0
+theme_override_colors/font_color = Color(0.839216, 0.243137, 0.192157, 1)
+theme_override_font_sizes/font_size = 80
+text = "??"
+horizontal_alignment = 1
+
+[node name="StatLabel" type="Label" parent="Background/IlliteratesBubblesPanel"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 129.0
+offset_right = 225.0
+offset_bottom = 208.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -5
+theme_override_font_sizes/font_size = 30
+text = "Illiterate
+social bubbles"
+horizontal_alignment = 1
