@@ -77,7 +77,8 @@ func move_unit(delta):
 	if time_since_last_update >= update_interval:
 		if connected: # stop and influence media literacy
 			current_direction = Vector2.ZERO
-			influence_media_literacy_score(connected_fellows[0], DEFAULT_MEDIA_LITERACY_INCREMENT)
+			for connected_fellow in connected_fellows: # influence all connected fellows
+				influence_media_literacy_score(connected_fellow, DEFAULT_MEDIA_LITERACY_INCREMENT)
 		elif fellow: # go towards fellow
 			current_direction = global_position.direction_to(fellow.global_position)
 		else: # idle
