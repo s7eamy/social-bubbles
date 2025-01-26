@@ -93,7 +93,7 @@ func influence_media_literacy_score(target: Object, increment_value: int) -> voi
 		if target.media_literacy_score >= MAX_MEDIA_LITERACY or target.media_literacy_score <= MIN_MEDIA_LITERACY:
 			return
 	#media_literacy_score += multiplication_sign(self.type == Globals.UnitTypes.MEDIA_LITERATE) * multiplication_sign(target.type == Globals.UnitTypes.MEDIA_LITERATE) * increment_value
-	media_literacy_score += multiplication_sign(target.type == Globals.UnitTypes.MEDIA_LITERATE) * increment_value
+	target.media_literacy_score += multiplication_sign(target.type == Globals.UnitTypes.MEDIA_LITERATE) * increment_value
 
 func multiplication_sign(check: bool) -> int:
 	return 1 if check else -1
