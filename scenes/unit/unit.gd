@@ -66,11 +66,11 @@ func update_color() -> void:
 
 	$MeshInstance2D.modulate = color
 
-func calculate_literacy_weight(positive: bool, media_literacy_score: float):
+func calculate_literacy_weight(positive: bool, literacy_score: float):
 	if positive:
-		return float((media_literacy_score + MEDIA_LITERACY_NEUTRAL_MIN_LIMIT)) / float((100 - MEDIA_LITERACY_NEUTRAL_MAX_LIMIT))
+		return float((literacy_score + MEDIA_LITERACY_NEUTRAL_MIN_LIMIT)) / float((100 - MEDIA_LITERACY_NEUTRAL_MAX_LIMIT))
 	else:
-		return float((media_literacy_score + 100)) / float((100 - MEDIA_LITERACY_NEUTRAL_MAX_LIMIT))
+		return float((literacy_score + 100)) / float((100 - MEDIA_LITERACY_NEUTRAL_MAX_LIMIT))
 
 func move_unit(delta):
 	time_since_last_update += delta
